@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CareerPath AI Job Match</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+/* Layout: two-column workbench (inputs left, verdict + gaps right), saved jobs underneath. */
+:root{
+  --bg:#f5f4f8; --surface:#ffffff; --ink:#1d1726; --muted:#66607a; --line:#dfdbe8;
+  --accent:#6b3fa0; --accent-soft:#efe8f8;
+  --ok:#6b3fa0; --ok-soft:#efe8f8; --bad:#b4322b; --bad-soft:#fbe7e5; --warn:#9a6200; --warn-soft:#fdf1d8; --info:#66607a; --info-soft:#f0eef4;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13111a; --surface:#1c1925; --ink:#ece8f4; --muted:#aaa3bd; --line:#322d40;
+    --accent:#b99af0; --accent-soft:#2c2340;
+    --ok:#b99af0; --ok-soft:#2c2340; --bad:#ff8a80; --bad-soft:#3a1c1a; --warn:#f2bf5e; --warn-soft:#3a2d12; --info:#aaa3bd; --info-soft:#24202f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13111a; --surface:#1c1925; --ink:#ece8f4; --muted:#aaa3bd; --line:#322d40;
+  --accent:#b99af0; --accent-soft:#2c2340;
+  --ok:#b99af0; --ok-soft:#2c2340; --bad:#ff8a80; --bad-soft:#3a1c1a; --warn:#f2bf5e; --warn-soft:#3a2d12; --info:#aaa3bd; --info-soft:#24202f;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+a{color:var(--accent)}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;padding:20px clamp(16px,4vw,40px) 12px;border-bottom:1px solid var(--line)}
+.brand{font:700 24px/1.1 var(--display);letter-spacing:-.01em;margin:0}
+.brand span{color:var(--accent)}
+.tag{color:var(--muted);font-size:13.5px;max-width:62ch;margin:0}
+main{padding:20px clamp(16px,4vw,40px) 48px;display:grid;gap:20px}
+.work{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:20px;align-items:start}
+.side{position:sticky;top:12px;max-height:calc(100vh - 24px);overflow-y:auto;overscroll-behavior:contain;border-radius:10px;scrollbar-gutter:stable}
+@media (max-width:760px){.work{grid-template-columns:1fr}.side{position:static;max-height:none;overflow:visible}}
+.board{min-height:340px;font-size:13px}
+.col{display:grid;gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+.card h2{font:600 18px/1.2 var(--display);margin:0 0 4px;text-wrap:balance;display:flex;align-items:center;gap:10px}
+.step{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--surface);font:600 13px var(--body)}
+.hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
+input[type=text],input[type=number],input[type=url],select,textarea{width:100%;font:14px/1.45 var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+textarea{font-family:var(--mono);font-size:12.5px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,.drop:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media (max-width:520px){.grid2,.grid3{grid-template-columns:1fr}}
+button{font:600 14px var(--body);border-radius:6px;padding:8px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button.ghost{background:transparent}
+button.small{padding:4px 10px;font-size:13px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.drop{border:1.5px dashed var(--line);border-radius:8px;padding:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--bg)}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop input[type=file]{font-size:13px;max-width:100%}
+.status{font-size:13px;color:var(--muted);min-height:1.4em;margin:6px 0 0}
+.status.err{color:var(--bad)}
+details.raw summary{cursor:pointer;font-size:13px;color:var(--muted);margin:10px 0 6px}
+.profile{display:grid;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.profile h3,.sub{font:600 14px var(--body);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 4px 3px 10px;font-size:13px;background:var(--bg)}
+.chip button{border:0;background:transparent;padding:2px 6px;font-size:12px;border-radius:999px;color:var(--muted)}
+.chip .lvl{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.chip .lvl.basic{background:var(--info-soft);color:var(--info)}
+.verdict{border-radius:10px;padding:16px 18px;border:1px solid var(--line);display:grid;gap:6px}
+.verdict .big{font:700 26px/1.1 var(--display)}
+.v-ready{background:var(--ok-soft);border-color:var(--ok)} .v-ready .big{color:var(--ok)}
+.v-toward{background:var(--bad-soft);border-color:var(--bad)} .v-toward .big{color:var(--bad)}
+.v-confirm{background:var(--warn-soft);border-color:var(--warn)} .v-confirm .big{color:var(--warn)}
+.v-cant{background:var(--info-soft);border-color:var(--info)} .v-cant .big{color:var(--info)}
+.v-recheck{background:var(--warn-soft);border-color:var(--warn);border-style:dashed} .v-recheck .big{color:var(--warn)}
+.p-recheck{background:var(--warn-soft);color:var(--warn);box-shadow:inset 0 0 0 1px var(--warn)}
+.counts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.pill{display:inline-block;font:600 12px/1 var(--body);padding:5px 9px;border-radius:999px;white-space:nowrap}
+.p-match{background:var(--ok-soft);color:var(--ok)} .p-missing{background:var(--bad-soft);color:var(--bad)} .p-confirm{background:var(--warn-soft);color:var(--warn)} .p-info{background:var(--info-soft);color:var(--info)}
+.p-ready{background:var(--ok-soft);color:var(--ok)} .p-toward{background:var(--bad-soft);color:var(--bad)} .p-needs{background:var(--warn-soft);color:var(--warn)} .p-cant{background:var(--info-soft);color:var(--info)}
+.reqs{display:grid;gap:10px;margin-top:8px}
+.req{border:1px solid var(--line);border-left-width:4px;border-radius:8px;padding:10px 12px;display:grid;gap:4px;background:var(--surface)}
+.req.s-match{border-left-color:var(--ok)} .req.s-missing{border-left-color:var(--bad)} .req.s-confirm{border-left-color:var(--warn)} .req.s-info{border-left-color:var(--line)}
+.req .head{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+.req .what{font-weight:600}
+.req .quote{font:12.5px/1.45 var(--mono);color:var(--muted);border-left:2px solid var(--line);padding-left:8px}
+.req .detail{font-size:13.5px}
+.req .tip{font-size:13.5px;background:var(--accent-soft);border-radius:6px;padding:6px 9px}
+.req .tip b{color:var(--accent)}
+.plan{margin:6px 0 0;padding-left:20px;display:grid;gap:8px}
+.plan li{padding-left:4px}
+.plan .kind{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.section-title{font:600 15px var(--display);margin:18px 0 0;display:flex;align-items:center;gap:8px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:600}
+td.num{font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);font-size:14px;padding:8px 0}
+.note{font-size:12.5px;color:var(--muted)}
+.example{display:inline-block;font:600 11px var(--body);text-transform:uppercase;letter-spacing:.05em;color:var(--warn);background:var(--warn-soft);padding:2px 7px;border-radius:4px;vertical-align:middle}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion: reduce){.toast{transition:none}}
+.other{margin-top:6px}
+.adder{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.adder select{flex:1;min-width:180px}
+.adder .other{flex:1 1 100%;margin-top:0}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);margin-bottom:-4px}
+.tabs button{border:0;border-bottom:3px solid transparent;border-radius:0;background:transparent;padding:10px 14px;color:var(--muted);font:600 15px var(--body)}
+.tabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+.tabs .badge{display:inline-block;min-width:20px;padding:1px 6px;margin-left:4px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:12px}
+[hidden]{display:none !important}
+.jobs{display:grid;gap:10px;margin-top:10px}
+.job{border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;background:var(--surface)}
+.job.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.job .t{font-weight:600}
+.job .meta{font-size:13px;color:var(--muted)}
+.job .acts{display:flex;gap:6px;align-items:start}
+.job .tags{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.star{font-size:18px;line-height:1;padding:5px 9px;color:var(--muted)}
+.star[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.plan li .row{margin-top:4px}
+.savestep[aria-pressed="true"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.box{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:8px}
+.box.check{border-color:var(--warn);background:var(--warn-soft)}
+.steps-group{margin-top:14px}
+.steps-group h3{font:600 15px var(--display);margin:0 0 6px}
+.stepitem{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start;padding:8px 0;border-bottom:1px solid var(--line)}
+.stepitem.done .txt{color:var(--muted);text-decoration:line-through}
+.stepitem input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent)}
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.realbox{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;padding:10px 12px;margin-bottom:12px;display:grid;gap:4px;background:var(--surface)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="brand">CareerPath <span>AI</span> · Job Match</h1>
+  <p class="tag">Upload your CV, paste a job posting, and see which requirements you meet, which are missing, and what to do next. Rules decide every result; when a rule can't be sure, it asks you to check instead of saying you're eligible. With AI reading on, your CV text (with your name, email, phone and street address removed first) and any job posting you paste are sent through the CareerPath server to the Claude API, only to read them into fields. Neither is stored.</p>
+</header>
+<div id="publicNotice" hidden role="note" style="margin:16px clamp(16px,4vw,40px) 0;padding:10px 14px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:8px;background:var(--accent-soft);font-size:14px"><b>Test version for classmates.</b> Please use a sample or made-up CV, or remove your personal details first. With AI reading on, the text you upload or paste is sent to the Claude API to be read into fields; nothing is stored. Up to 20 AI readings per person per day; after that the rules reader still works. Real Jobs is a snapshot from employers' official careers boards: always check the official posting before applying.</div>
+
+<main>
+<nav class="tabs" role="tablist" aria-label="Sections">
+  <button type="button" role="tab" id="tab-find" aria-controls="panel-find" aria-selected="true">Find jobs for me</button>
+  <button type="button" role="tab" id="tab-check" aria-controls="panel-check" aria-selected="false">Check a job I found</button>
+  <button type="button" role="tab" id="tab-plan" aria-controls="panel-plan" aria-selected="false">My plan <span class="badge" id="planCount">0</span></button>
+</nav>
+<div class="work" id="workArea">
+  <div class="col side" id="sidebar" role="complementary" aria-label="Your CV, profile and job interests">
+    <section class="card" aria-labelledby="cv-h">
+      <h2 id="cv-h"><span class="step">1</span> Your CV</h2>
+      <p class="hint">Upload a PDF, Word (.docx) or text file, or paste the text. Then check the profile we read from it and fix anything wrong.</p>
+      <div class="drop" id="drop">
+        <div>
+          <label for="cvFile">CV file</label>
+          <input type="file" id="cvFile" accept=".pdf,.docx,.txt,.md,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+        </div>
+        <span class="note">or drop a file here</span>
+      </div>
+      <label class="note" style="font-weight:400;display:flex;gap:8px;align-items:flex-start;margin-top:10px"><input type="checkbox" id="useAI" checked style="margin-top:3px"> <span><b style="color:var(--ink)">Read my CV with AI</b> (more accurate). Your name, email, phone and street address are removed before the text is sent, and nothing is stored. Untick to read it in this browser only, with simpler rules.</span></label>
+      <p class="note" id="aiStatus" style="margin:4px 0 0"></p>
+      <p class="status" id="cvStatus" role="status"></p>
+      <details class="raw" id="cvRaw">
+        <summary>CV text <span class="example" id="cvExample">Example CV</span></summary>
+        <label for="cvText" class="sr">CV text</label>
+        <textarea id="cvText" rows="10"></textarea>
+        <div class="row" style="margin-top:8px"><button type="button" id="reread">Read profile from this text</button></div>
+      </details>
+
+      <div class="profile" id="profile">
+        <h3>Your profile <span class="note">(edit anything we got wrong)</span></h3>
+        <details id="aiEvidence" hidden><summary class="note" style="cursor:pointer">What the AI read from your CV, with quotes</summary><ul class="plan" id="aiEvidenceList" style="font-size:13px"></ul></details>
+        <div id="w-interests"></div>
+        <div class="grid2"><div id="w-levelWanted"></div><div id="w-workStyle"></div></div>
+        <div id="w-prefLocations"></div>
+        <p class="note" style="margin:-4px 0 0">Level, work style and locations choose which Real Jobs you see. They never change the eligibility rules.</p>
+        <div class="grid2">
+          <div id="w-deg1Level"></div>
+          <div id="w-deg1Field"></div>
+          <div id="w-deg2Level"></div>
+          <div id="w-deg2Field"></div>
+        </div>
+        <div class="grid3">
+          <div id="w-gradYear"></div>
+          <div id="w-ftYears"></div>
+          <div id="w-internMonths"></div>
+        </div>
+        <div id="w-expTypes"></div>
+        <div id="w-skills"></div>
+        <div id="w-certs"></div>
+        <div class="grid2">
+          <div id="w-city"></div>
+          <div id="w-state"></div>
+        </div>
+        <div id="w-auth"></div>
+        <div id="w-languages"></div>
+        <label class="note" style="font-weight:400;display:flex;gap:8px;align-items:center"><input type="checkbox" id="remember"> Remember my profile in this browser</label>
+      </div>
+    </section>
+  </div>
+
+  <div class="col">
+    <div id="panel-find" role="tabpanel" aria-labelledby="tab-find" class="col">
+      <section class="card" aria-labelledby="find-h">
+        <h2 id="find-h"><span class="step">2</span> Jobs that fit you</h2>
+        <div class="seg" role="group" aria-label="Which jobs to show">
+          <button type="button" class="small" id="mode-demo" aria-pressed="true">Demo jobs (simulated)</button>
+          <button type="button" class="small" id="mode-real" aria-pressed="false">Real Jobs</button>
+        </div>
+        <p class="hint"><span id="demoOrderNote">Ready jobs come first, then the rest by fit (skills 50%, job interests 30%, preferred items 20%). Fit only sets the order; it never hides a missing requirement. </span><span id="findSourceNote"><span class="example">Example jobs</span> These are fictional postings for the demo.</span></p>
+        <div class="grid2"><div id="w-findFilter"></div><div id="w-findInterest"></div></div>
+        <div class="grid2" id="realFilters" hidden style="margin-top:10px"><div id="w-realEmployer"></div><div id="w-realLocation"></div></div>
+        <p class="note" id="realSummary" hidden style="margin:10px 0 0"></p>
+        <div class="jobs" id="jobList"></div>
+        <div class="row" style="margin-top:10px"><button type="button" class="small" id="showMore" hidden>Show more</button></div>
+      </section>
+      <section class="card" aria-labelledby="fres-h" id="findResults">
+        <h2 id="fres-h"><span class="step">3</span> Your match: <span id="findTitle"></span></h2>
+        <div id="findResult"></div>
+      </section>
+    </div>
+    <div id="panel-check" role="tabpanel" aria-labelledby="tab-check" class="col" hidden>
+      <section class="card" aria-labelledby="job-h">
+        <h2 id="job-h"><span class="step">2</span> Paste a job you found</h2>
+        <p class="hint">Copy the whole posting from any site and paste it here: title, company, location, posting date and requirements. We read the rest from the text.</p>
+        <label for="jobText" class="sr">Job posting</label>
+        <textarea id="jobText" class="board" rows="18" placeholder="Paste the full job posting here"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button type="button" class="primary" id="checkBtn">Check my match</button>
+          <button type="button" class="ghost" id="clearJob">Clear board</button>
+          <label class="note" style="font-weight:400;display:inline-flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="useAIJob" checked> Read the posting with AI</label>
+          <span class="example" id="jobExample">Example posting</span>
+          <span class="note" id="pasteMeta"></span>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="res-h" id="results">
+        <h2 id="res-h"><span class="step">3</span> Your match</h2>
+        <div id="resultBody"></div>
+      </section>
+    </div>
+    <div id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" class="col" hidden>
+  <section class="card" aria-labelledby="saved-h">
+    <div class="row" style="justify-content:space-between">
+      <h2 id="saved-h">Starred jobs</h2>
+      <span class="note" id="storeNote"></span>
+    </div>
+    <p class="hint">Select the star on any job to save it here. Results are checked again against your current profile.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Job</th><th>Company</th><th>Result now</th><th>Required met</th><th>Posted</th><th>Starred</th><th><span class="sr">Actions</span></th></tr></thead>
+      <tbody id="savedBody"></tbody>
+    </table></div>
+  </section>
+  <section class="card" aria-labelledby="steps-h">
+    <div class="row" style="justify-content:space-between">
+      <h2 id="steps-h">Saved steps</h2>
+      <span class="note" id="stepProgress"></span>
+    </div>
+    <p class="hint">Steps you saved from a job's work-forward path or double-check list. Tick them off as you go.</p>
+    <div id="stepList"></div>
+  </section>
+</div>
+  </div>
+</div>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+"use strict";
+/* ---------------- Settings ---------------- */
+// Paste your Cloudflare Worker address here after you deploy it (see README).
+// Leave it empty to read CVs in the browser only.
+// Where the Claude reader lives.
+//  - On the team VM (http://127.0.0.1:8000) the page talks to its own server: leave everything as is.
+//  - On the public site (GitHub Pages) it talks to the Cloudflare Worker. Paste the Worker address here, no slash at the end:
+const PUBLIC_API = "https://careerpath-ai-api.mssep-team03.workers.dev";      // e.g. "https://careerpath-ai.your-team.workers.dev"
+const LOCAL_SITE = ["127.0.0.1","localhost"].includes(location.hostname) || location.protocol==="file:";
+const PUBLIC_SITE = !LOCAL_SITE;   // public version: no Real Jobs, testers asked to use sample CVs
+const API_BASE = PUBLIC_SITE ? PUBLIC_API.replace(/\/+$/,"") : "";
+function clientId(){
+  let id = ""; try{ id = localStorage.getItem("careerpath.client.v1") || ""; }catch(e){}
+  if (!/^[a-f0-9]{24}$/.test(id)){ id = [...crypto.getRandomValues(new Uint8Array(12))].map(b=>b.toString(16).padStart(2,"0")).join(""); try{ localStorage.setItem("careerpath.client.v1", id); }catch(e){} }
+  return id;
+}
+// The Worker answers 503 "limits_unavailable" when many people click in the same second: wait a moment and retry once.
+async function apiPost(url, body, signal){
+  let res = await fetch(url, {method:"POST", headers:API_HEADERS, body, signal});
+  if (res.status===503 && PUBLIC_SITE){
+    const b = await res.clone().json().catch(()=>({}));
+    if (b.code==="limits_unavailable"){ await new Promise(r=>setTimeout(r, 1500 + Math.random()*2000)); res = await fetch(url, {method:"POST", headers:API_HEADERS, body, signal}); }
+  }
+  return res;
+}
+const API_HEADERS = PUBLIC_SITE ? {"Content-Type":"application/json", "X-CareerPath-Client": clientId()} : {"Content-Type":"application/json"};
+const CV_READER_URL = API_BASE + "/api/parse-cv";
+const JOB_READER_URL = API_BASE + "/api/parse-job";
+// AI reading is switched on only after /api/health confirms the CareerPath server and key are ready.
+const AI = {ready:false, mock:false, reason:"Checking whether AI reading is available…"};
+
+/* ---------------- Example data (fictional) ---------------- */
+const EXAMPLE_CV = `Maya Chen
+Champaign, IL | maya.chen@example.com
+
+EDUCATION
+University of Illinois Urbana-Champaign
+B.S. in Economics, Minor in Statistics — Expected May 2026
+
+EXPERIENCE
+Data Analyst Intern, Prairie Retail Group — Chicago, IL
+Jun 2025 – Aug 2025
+- Built Tableau dashboards tracking weekly store sales for 40 locations
+- Cleaned sales data in Excel and wrote basic SQL queries
+
+Research Assistant, Department of Economics
+Sep 2024 – May 2025
+- Ran regression analysis in Python on survey data
+
+SKILLS
+Advanced: Excel, Tableau
+Basic: SQL, Python
+
+CERTIFICATIONS
+Google Data Analytics Certificate
+
+Languages: English, Mandarin
+Work authorization: F-1 student, will require sponsorship after OPT`;
+
+const EXAMPLE_JOB = {
+  title:"Junior Data Analyst", company:"Lakeshore Health Partners (example)", url:"",
+  text:`Junior Data Analyst
+Location: Chicago, IL (Hybrid, 3 days/week in office)
+
+About the role
+You will build reports and dashboards for our clinical operations team.
+
+Responsibilities
+- Maintain weekly KPI dashboards
+- Answer ad-hoc data questions from managers
+
+Requirements
+- Bachelor's degree in Economics, Statistics, Mathematics, or related field (Master's preferred)
+- 0-2 years of experience in data analysis; internships count
+- Proficiency in SQL and a BI tool such as Power BI or Tableau
+- Strong written and verbal communication skills
+- Must be authorized to work in the U.S. without sponsorship now or in the future
+
+Preferred qualifications
+- Experience with Python or R
+- Experience with healthcare data`
+};
+
+const EXAMPLE_PASTE = `Business Intelligence Analyst
+Company: Union Loop Transit Analytics (example)
+Posted 52 days ago
+Location: Chicago, IL (On-site)
+
+About the role
+You will turn ridership data into weekly reports for planning teams.
+
+Requirements
+- Bachelor's degree in Economics, Statistics, Business Analytics, or related field
+- 1+ years of experience in data analysis; internships count
+- Advanced SQL and Tableau
+- Must be authorized to work in the U.S.
+
+Preferred qualifications
+- Python
+- Experience with transportation data`;
+
+/* ---------------- Dictionaries ---------------- */
+const SKILLS = [
+  ["SQL", /\b(sql|mysql|postgres(?:ql)?|t-sql|pl\/sql)\b/i],
+  ["Python", /\bpython\b/i],
+  ["R", /(?<![\w&-])R(?![\w+#&-])|\brstudio\b/],
+  ["Excel", /\b(?:ms |microsoft )?excel\b/i],
+  ["Tableau", /\btableau\b/i],
+  ["Power BI", /\bpower\s?bi\b/i],
+  ["Looker", /\blooker\b/i],
+  ["Qlik", /\bqlik\w*\b/i],
+  ["Alteryx", /\balteryx\b/i],
+  ["SAS", /\bSAS\b/],
+  ["SPSS", /\bspss\b/i],
+  ["Stata", /\bstata\b/i],
+  ["VBA", /\bvba\b/i],
+  ["pandas", /\bpandas\b/i],
+  ["NumPy", /\bnumpy\b/i],
+  ["Java", /\bjava\b(?!\s*script)/i],
+  ["JavaScript", /\bjavascript\b/i],
+  ["C++", /\bc\+\+/i],
+  ["HTML/CSS", /\b(html|css)\b/i],
+  ["Git", /\bgit(?:hub)?\b/i],
+  ["AWS", /\b(aws|amazon web services)\b/i],
+  ["Azure", /\bazure\b/i],
+  ["Google Cloud", /\b(gcp|google cloud)\b/i],
+  ["Snowflake", /\bsnowflake\b/i],
+  ["Spark", /\b(apache )?spark\b/i],
+  ["dbt", /\bdbt\b/i],
+  ["Airflow", /\bairflow\b/i],
+  ["ETL", /\betl\b/i],
+  ["Machine learning", /\bmachine learning\b/i],
+  ["Statistical analysis", /\bstatistical (?:analysis|modell?ing|methods)\b/i],
+  ["Regression analysis", /\bregression\b/i],
+  ["Forecasting", /\bforecast(?:ing)?\b/i],
+  ["A/B testing", /\ba\/b test\w*/i],
+  ["Data visualization", /\bdata visuali[sz]ation\b/i],
+  ["Financial modeling", /\bfinancial modell?ing\b/i],
+  ["Google Analytics", /\bgoogle analytics\b/i],
+  ["Salesforce", /\bsalesforce\b/i],
+  ["HubSpot", /\bhubspot\b/i],
+  ["SAP", /\bSAP\b/],
+  ["QuickBooks", /\bquickbooks\b/i],
+  ["Jira", /\bjira\b/i],
+  ["Figma", /\bfigma\b/i],
+  ["Agile/Scrum", /\b(agile|scrum)\b/i],
+  ["Project management", /\bproject management\b/i],
+  ["MATLAB", /\bmatlab\b/i],
+  ["AutoCAD", /\bautocad\b/i],
+  ["Linux", /\blinux\b/i],
+  ["SEO", /\bSEO\b/],
+  ["PowerPoint", /\bpowerpoint\b/i],
+  ["Microsoft Office", /\b(microsoft|ms) office\b/i]
+];
+const SKILL_TIPS = {
+  "SQL":"Free practice: Kaggle Learn's Intro and Advanced SQL, or SQLBolt. Then publish one analysis that joins and aggregates a real dataset.",
+  "Python":"Free practice: Kaggle Learn Python and pandas. Then clean and analyse one public dataset and put the notebook on GitHub.",
+  "R":"Free practice: R for Data Science (r4ds.hadley.nz). Reproduce one analysis in R and share the script.",
+  "Power BI":"Free practice: Microsoft Learn's Power BI data analyst path. Build one dashboard from a public dataset.",
+  "Tableau":"Free practice: Tableau Public and Tableau's free training videos. Publish one dashboard on your Tableau Public profile.",
+  "Excel":"Practise pivot tables, XLOOKUP and charts; build one workbook that answers a real question.",
+  "Looker":"Try Google's free Looker Studio and build one report from a public dataset."
+};
+const FIELDS = ["business analytics","data science","data analytics","computer science","computer engineering","information systems","management information systems","information technology","electrical engineering","mechanical engineering","industrial engineering","civil engineering","chemical engineering","engineering","operations research","applied mathematics","mathematics","math","statistics","economics","finance","accounting","business administration","business","management","marketing","supply chain management","supply chain","psychology","sociology","political science","public health","health administration","nursing","biology","chemistry","physics","communications","journalism","english","education","social work","public policy","actuarial science","geography","environmental science","biomedical engineering","kinesiology","hospitality","human resources"].sort((a,b)=>b.length-a.length);
+const FIELD_ALIAS = {"math":"mathematics","supply chain":"supply chain management","management information systems":"information systems"};
+const STATES = {AL:"alabama",AK:"alaska",AZ:"arizona",AR:"arkansas",CA:"california",CO:"colorado",CT:"connecticut",DE:"delaware",FL:"florida",GA:"georgia",HI:"hawaii",ID:"idaho",IL:"illinois",IN:"indiana",IA:"iowa",KS:"kansas",KY:"kentucky",LA:"louisiana",ME:"maine",MD:"maryland",MA:"massachusetts",MI:"michigan",MN:"minnesota",MS:"mississippi",MO:"missouri",MT:"montana",NE:"nebraska",NV:"nevada",NH:"new hampshire",NJ:"new jersey",NM:"new mexico",NY:"new york",NC:"north carolina",ND:"north dakota",OH:"ohio",OK:"oklahoma",OR:"oregon",PA:"pennsylvania",RI:"rhode island",SC:"south carolina",SD:"south dakota",TN:"tennessee",TX:"texas",UT:"utah",VT:"vermont",VA:"virginia",WA:"washington",WV:"west virginia",WI:"wisconsin",WY:"wyoming",DC:"district of columbia"};
+const LANGS = ["spanish","mandarin","chinese","cantonese","french","german","korean","japanese","portuguese","arabic","hindi","urdu","vietnamese","polish","russian","italian","tagalog","ukrainian","gujarati","bengali","american sign language","asl"];
+const CERTS = [
+  ["CPA",/\bCPA\b/],["CFA",/\bCFA\b/],["CMA",/\bCMA\b/],["PMP",/\bPMP\b/],["CAPM",/\bCAPM\b/],
+  ["RN licence",/\b(RN|registered nurse)\b/],["LPN licence",/\bLPN\b/],["CNA",/\bCNA\b/],["BLS",/\bBLS\b/],["ACLS",/\bACLS\b/],
+  ["SHRM-CP",/\bSHRM-?CP\b/i],["Series 7",/\bseries 7\b/i],["Six Sigma",/\bsix sigma\b/i],
+  ["CompTIA",/\bcomptia\b/i],["AWS certification",/\baws certified\b/i],["Google Data Analytics Certificate",/\bgoogle data analytics\b/i],
+  ["Tableau certification",/\btableau (desktop )?(specialist|certified)/i],["Microsoft certification",/\bmicrosoft certified\b/i],
+  ["Teaching licence",/\bteaching (licen[cs]e|certificat)/i],["Professional Engineer (PE)",/\b(PE licen[cs]e|professional engineer)\b/i],["EIT/FE",/\b(EIT|FE exam)\b/]
+];
+const SOFT = /\b(communication|interpersonal|team ?work|teamwork|team player|collaborat\w*|attention to detail|detail[- ]oriented|problem[- ]solving|self[- ]starter|organi[sz]ed|organi[sz]ational|time management|fast[- ]paced|curious|curiosity|initiative|leadership|work independently|independently|critical thinking|adaptab\w*|multi-?task\w*|motivated|ownership|growth mindset|presentation skills|customer[- ]focused|positive attitude)\b/i;
+const PREF_WORD = /\b(preferred|a plus|is a plus|nice[- ]to[- ]have|desired|desirable|bonus|ideally|advantageous|helpful)\b/i;
+const REQ_WORD = /\b(required|must|minimum|need to|needs to)\b/i;
+const MONTHS = {jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11};
+const NUMWORDS = {zero:0,one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10};
+const LEVEL_NAMES = ["no degree","an associate degree","a bachelor's degree","a master's degree","a PhD"];
+
+/* ---------------- Helpers ---------------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s||"").toLowerCase().replace(/[’']/g,"'").replace(/\s+/g," ").trim();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),2200); }
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+function lsDel(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function fieldsIn(text){
+  let t = " " + norm(text) + " ", out = [];
+  for (const f of FIELDS){
+    const re = new RegExp("\\b"+f.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\b");
+    if (re.test(t)){ out.push(FIELD_ALIAS[f]||f); t = t.replace(re," # "); }
+  }
+  return [...new Set(out)];
+}
+function wordNum(s){ s=norm(s); return s in NUMWORDS ? NUMWORDS[s] : parseFloat(s); }
+function fmtYears(y){ y=Math.round(y*10)/10; return y + (y===1?" year":" years"); }
+
+/* ---------------- CV reading ---------------- */
+function degreeLevelOf(line){
+  const l = line;
+  if (/\b(ph\.?\s?d\.?|doctorate|doctor of)(?![a-z])/i.test(l)) return 4;
+  if (/\b(master'?s?|m\.s\.|m\.a\.|m\.sc\.?|msc|mba|m\.b\.a\.|ms in|ma in|m\.eng)(?![a-z])/i.test(l)) return 3;
+  if (/\b(bachelor'?s?|b\.s\.|b\.a\.|b\.sc\.?|bsc|bs in|ba in|b\.eng|b\.b\.a\.|bba|undergraduate degree)(?![a-z])/i.test(l)) return 2;
+  if (/\b(associate'?s?|a\.a\.|a\.s\.)\s*(degree|of|in)\b/i.test(l)) return 1;
+  return 0;
+}
+function sectionOf(line){
+  const t = norm(line).replace(/[:|•\-–—]+/g," ").trim();
+  if (t.length > 40) return null;
+  if (/^(education|academic background|academics)\b/.test(t)) return "edu";
+  if (/^((professional |work |relevant |research )?experience|employment( history)?|work history|internships?)\b/.test(t)) return "exp";
+  if (/^(skills|technical skills|projects?|activities|leadership|certifications?|licen[cs]es|awards|honors|languages|interests|volunteer\w*|involvement|summary|profile|objective)\b/.test(t)) return "other";
+  return null;
+}
+function parseDate(s, end){
+  s = norm(s);
+  if (/present|current|now/.test(s)) { const d=new Date(); return d.getFullYear()*12+d.getMonth(); }
+  let m = s.match(/([a-z]{3,9})\.?\s+(\d{4})/);
+  if (m && MONTHS[m[1].slice(0,4)]!==undefined) return +m[2]*12 + MONTHS[m[1].slice(0,4)];
+  if (m && MONTHS[m[1].slice(0,3)]!==undefined) return +m[2]*12 + MONTHS[m[1].slice(0,3)];
+  m = s.match(/(\d{1,2})\/(\d{4})/); if (m) return +m[2]*12 + (+m[1]-1);
+  m = s.match(/(\d{4})/); if (m) return +m[1]*12 + (end?11:0);
+  return null;
+}
+const RANGE_RE = /((?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+\d{4}|\d{1,2}\/\d{4}|\b\d{4})\s*(?:-|–|—|to)\s*((?:jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\.?\s+\d{4}|\d{1,2}\/\d{4}|\d{4}|present|current|now)/gi;
+
+function readCV(text){
+  const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const p = {degrees:[], gradYear:"", ftYears:0, internMonths:0, expTypes:[], skills:{}, certs:[], location:"", auth:"unsure", languages:[]};
+  // degrees
+  let section = null, hasHeaders = lines.some(l=>sectionOf(l));
+  const ctx = [];
+  lines.forEach((l,i)=>{
+    const s = sectionOf(l); if (s){ section = s; return; }
+    ctx.push({l, section, i});
+    const lvl = degreeLevelOf(l);
+    if (lvl && !/\b(pursuing|plan to|planning)\b/i.test(l)){
+      const main = l.replace(/\bminor\b.*$/i, "");
+      let f = fieldsIn(main);
+      if (!f.length){ const m = main.match(/\b(?:in|of)\s+([A-Z][A-Za-z&\s]+?)(?:,|\||—|–|-|\(|\d|$)/); if (m) f=[norm(m[1])]; }
+      p.degrees.push({level:lvl, fields:f});
+      const y = l.match(/\b(19|20)\d{2}\b/g); if (y) p.gradYear = String(Math.max(...y.map(Number), +p.gradYear||0));
+    }
+    const mj = l.match(/^major\s*:\s*(.+)$/i); if (mj && p.degrees.length) { p.degrees[p.degrees.length-1].fields = [...new Set([...p.degrees[p.degrees.length-1].fields, ...fieldsIn(mj[1])])]; }
+  });
+  if (!p.gradYear){ const g = text.match(/(expected|graduat\w*|class of)[^\n]{0,30}?\b((?:19|20)\d{2})\b/i); if (g) p.gradYear = g[2]; }
+  // experience ranges
+  const seen = new Set();
+  ctx.forEach(({l,section,i})=>{
+    if (hasHeaders ? section!=="exp" : /(universit|college|bachelor|b\.s\.|b\.a\.|gpa|expected|high school)/i.test(l)) return;
+    RANGE_RE.lastIndex = 0; let m;
+    while ((m = RANGE_RE.exec(l))){
+      const a = parseDate(m[1], false), b = parseDate(m[2], true);
+      if (a==null || b==null || b<a) continue;
+      const key = a+"-"+b; if (seen.has(key)) continue; seen.add(key);
+      const months = b - a + 1;
+      const near = [lines[i-2]||"", lines[i-1]||"", l].join(" ");
+      if (/\b(intern\w*|co-?op|fellow\w*|research assistant|teaching assistant|student worker|part[- ]time)\b/i.test(near)) p.internMonths += months;
+      else p.ftYears += months/12;
+    }
+  });
+  const yrs = text.match(/(\d+)\+?\s*years? of (?:professional |full[- ]time |work )?experience/i);
+  if (yrs) p.ftYears = Math.max(p.ftYears, +yrs[1]);
+  p.ftYears = Math.round(p.ftYears*10)/10;
+  // experience types from job titles in experience section
+  const types = new Set();
+  ctx.filter(c=>c.section==="exp" && !/^[-•*▪◦●]/.test(c.l)).forEach(({l})=>{
+    const t = norm(l);
+    [["data analysis",/\b(data|business|financial|research) analy/],["research",/\bresearch\b/],["marketing",/\bmarketing\b/],["sales",/\bsales\b/],["finance",/\bfinanc/],["accounting",/\baccount(ing|ant)\b/],["nursing",/\bnurs(e|ing)\b/],["clinical",/\bclinical\b/],["teaching",/\b(teach|tutor)/],["customer service",/\bcustomer (service|support)\b/],["software development",/\b(software|developer|engineer)\b/],["consulting",/\bconsult/],["retail",/\bretail\b/],["healthcare",/\b(health|hospital|patient)/],["operations",/\boperations\b/]].forEach(([n,re])=>{ if(re.test(t)) types.add(n); });
+  });
+  p.expTypes = [...types];
+  // skills + level
+  lines.forEach(l=>{
+    for (const [name,re] of SKILLS){
+      const m = l.match(re); if (!m) continue;
+      const before = l.slice(0, m.index).toLowerCase();
+      const adv = before.lastIndexOf("advanced"), prof = Math.max(before.lastIndexOf("proficient"), before.lastIndexOf("expert"), before.lastIndexOf("strong"));
+      const bas = Math.max(before.lastIndexOf("basic"), before.lastIndexOf("familiar"), before.lastIndexOf("beginner"), before.lastIndexOf("exposure"), before.lastIndexOf("learning"), before.lastIndexOf("intermediate"));
+      const lvl = Math.max(adv,prof) > bas ? "advanced" : "basic";
+      if (!p.skills[name] || lvl==="advanced") p.skills[name] = p.skills[name]==="advanced" ? "advanced" : lvl;
+    }
+  });
+  // certs
+  CERTS.forEach(([n,re])=>{ if (re.test(text)) p.certs.push(n); });
+  // location: first "City, ST" in the top lines
+  for (const l of lines.slice(0,8)){
+    const m = l.match(/([A-Z][A-Za-z .'-]+?),\s*([A-Z]{2})\b/);
+    if (m && STATES[m[2]]){ p.location = m[1].trim().split(/\s*\|\s*/).pop() + ", " + m[2]; break; }
+  }
+  // work authorization
+  if (/\b(F-?1|OPT|CPT|H-?1B|J-?1)\b|requires? (visa )?sponsorship|need(s)? sponsorship|will require sponsorship/i.test(text)) p.auth = "needs";
+  else if (/\bU\.?S\.? citizen\b/i.test(text)) p.auth = "citizen";
+  else if (/\b(permanent resident|green card)\b|authori[sz]ed to work[^.\n]*without (visa )?sponsorship/i.test(text)) p.auth = "pr";
+  // languages
+  const lm = text.match(/languages?\s*:\s*([^\n]+)/i);
+  if (lm) p.languages = lm[1].split(/,|;|\//).map(s=>s.replace(/\(.*?\)/g,"").trim()).filter(Boolean);
+  if (!p.languages.length){ LANGS.forEach(L=>{ if (new RegExp("\\b"+L+"\\b","i").test(text)) p.languages.push(L[0].toUpperCase()+L.slice(1)); }); }
+  return p;
+}
+
+/* ---------------- Dropdown pickers (every choice has "Other…" with a box to type) ---------------- */
+const OTHER = "__other";
+const CITIES = ["Atlanta, GA","Austin, TX","Boston, MA","Champaign, IL","Chicago, IL","Columbus, OH","Dallas, TX","Denver, CO","Detroit, MI","Evanston, IL","Houston, TX","Indianapolis, IN","Los Angeles, CA","Madison, WI","Miami, FL","Milwaukee, WI","Minneapolis, MN","Naperville, IL","New York, NY","Peoria, IL","Philadelphia, PA","Phoenix, AZ","Pittsburgh, PA","Rockford, IL","San Francisco, CA","Schaumburg, IL","Seattle, WA","Springfield, IL","St. Louis, MO","Urbana, IL","Washington, DC"];
+const INTERESTS = ["Data & analytics","Business analysis","Finance & accounting","Marketing","Operations & supply chain","Healthcare","Software engineering","Research","Consulting","Sales","Education","Human resources","Product","Design","Customer success","Legal & compliance"];
+const OPTS = {
+  level: [["0","None"],["1","Associate"],["2","Bachelor's"],["3","Master's"],["4","PhD"]],
+  field: [["","Not set"], ...[...new Set(FIELDS.map(f=>FIELD_ALIAS[f]||f))].sort().map(f=>[f, cap(f)])],
+  gradYear: [["","Not set"], ...Array.from({length:19},(_,i)=>2014+i).map(y=>[String(y),String(y)])],
+  ftYears: [["0","None"],["0.5","6 months"],["1","1 year"],["1.5","1.5 years"],["2","2 years"],["3","3 years"],["4","4 years"],["5","5 years"],["6","6 years"],["8","8 years"],["10","10+ years"]],
+  internMonths: [["0","None"],["2","2 months"],["3","3 months"],["4","4 months"],["6","6 months"],["8","8 months"],["9","9 months"],["12","12 months"],["15","15 months"],["18","18 months"],["24","24 months"]],
+  expTypes: ["accounting","clinical","consulting","customer service","data analysis","finance","healthcare","marketing","nursing","operations","research","retail","sales","software development","teaching"].map(x=>[x,cap(x)]),
+  skills: SKILLS.map(([n])=>[n,n]).sort((a,b)=>a[0].localeCompare(b[0])),
+  certs: CERTS.map(([n])=>[n,n]),
+  city: [["","Not set"], ...CITIES.map(c=>[c.split(",")[0], c])],
+  state: [["","Not set"], ...Object.entries(STATES).map(([a,n])=>[a, a+" · "+cap(n)]), ["XX","Outside the U.S."]],
+  auth: [["unsure","Not sure"],["citizen","U.S. citizen"],["pr","Permanent resident or other: no sponsorship needed"],["needs","Will need sponsorship now or later (e.g. F-1/OPT)"]],
+  languages: ["English", ...LANGS.filter(l=>l!=="asl").map(cap)].map(x=>[x.toLowerCase(),x]),
+  jobTitle: [["","Choose a job title"], ...["Accountant","Business Analyst","Consultant","Data Analyst","Data Scientist","Financial Analyst","Junior Data Analyst","Marketing Analyst","Marketing Coordinator","Operations Analyst","Product Analyst","Project Coordinator","Registered Nurse","Research Analyst","Sales Associate","Software Engineer","Supply Chain Analyst"].map(x=>[x,x])],
+  jobCompany: [["","Choose a company"]],
+  interests: INTERESTS.map(x=>[x,x]),
+  jobPosted: [["","Not sure"],["0","Today"],["4","1–7 days ago"],["20","8–30 days ago"],["40","31–45 days ago"],["60","More than 45 days ago"]],
+  findFilter: [["all","All results"],["ready","Ready"],["needs","Needs confirmation"],["toward","Work toward"],["recheck","Needs recheck"],["cant","Can't confirm"]],
+  findInterest: [["","All job areas"], ...INTERESTS.map(x=>[x,x])],
+  levelWanted: [["any","Any level"],["intern","Internship"],["entry","Entry-level"],["experienced","Experienced"]],
+  workStyle: [["any","Any (on-site, hybrid or remote)"],["hybrid","Remote or hybrid"],["remote","Remote only"]],
+  prefLocations: ["Anywhere","Anywhere in the US","Remote (US)","Remote (anywhere)","Europe","Canada","Chicago, IL","New York, NY","San Francisco, CA","Oakland, CA","Seattle, WA","Austin, TX","Boston, MA","London, UK"].map(x=>[x,x]),
+  realEmployer: [["","All employers"]],
+  realLocation: [["","All locations"],["remote","Remote"],["hybrid","Hybrid"],["onsite","On-site"],["US","United States"],["Canada","Canada"],["Europe","Europe"],["Asia-Pacific","Asia-Pacific"],["Global","Global / anywhere"]]
+};
+const LABELS = {deg1Level:"Degree", deg1Field:"Field of study", deg2Level:"Second degree or major", deg2Field:"Its field", gradYear:"Graduation year", ftYears:"Full-time experience", internMonths:"Internships (total)", expTypes:"Types of experience you have", skills:"Skills", certs:"Certificates and licences", city:"City you live in", state:"State", auth:"U.S. work authorization", languages:"Languages", jobTitle:"Job title", jobCompany:"Company", interests:"Job interests", levelWanted:"Level you're looking for", workStyle:"Work style", prefLocations:"Preferred locations", realEmployer:"Employer", realLocation:"Location", jobPosted:"When was it posted?", findFilter:"Show", findInterest:"Job area"};
+const OPT_KEY = {deg1Level:"level", deg2Level:"level", deg1Field:"field", deg2Field:"field"};
+
+function fillSelect(sel, opts, keep){
+  const cur = keep ? sel.value : null;
+  sel.innerHTML = opts.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join("") + `<option value="${OTHER}">Other…</option>`;
+  if (keep && [...sel.options].some(o=>o.value===cur)) sel.value = cur;
+}
+function single(id){
+  const w = $("w-"+id), opts = OPTS[OPT_KEY[id]||id];
+  w.innerHTML = `<label for="${id}">${esc(LABELS[id])}</label><select id="${id}"></select><input type="text" class="other" id="${id}_other" placeholder="Type your answer" hidden aria-label="${esc(LABELS[id])}: other">`;
+  const sel = $(id), oth = $(id+"_other");
+  fillSelect(sel, opts);
+  sel.addEventListener("change", ()=>{ oth.hidden = sel.value!==OTHER; if (!oth.hidden) oth.focus(); w.dispatchEvent(new Event("pick",{bubbles:true})); });
+  oth.addEventListener("input", ()=>w.dispatchEvent(new Event("pick",{bubbles:true})));
+}
+function getV(id){ const sel=$(id); return sel.value===OTHER ? $(id+"_other").value.trim() : sel.value; }
+function setV(id, v){
+  const sel=$(id), oth=$(id+"_other"); v = v==null ? "" : String(v);
+  let hit = [...sel.options].find(o=>o.value===v && v!==OTHER) || [...sel.options].find(o=>norm(o.value)===norm(v) || norm(o.textContent)===norm(v));
+  if (hit || v===""){ sel.value = hit ? hit.value : sel.options[0].value; oth.hidden = true; oth.value=""; }
+  else { sel.value = OTHER; oth.hidden = false; oth.value = v; }
+}
+// multi-value lists: dropdown + "Other…" box + Add button, shown as removable chips
+const multi = {interests:[], prefLocations:[], expTypes:[], certs:[], languages:[], skills:{}};
+function multiPicker(id){
+  const w = $("w-"+id);
+  const hint = id==="skills" ? '<p class="note" style="margin:2px 0 6px">Click a level to switch it between basic and advanced.</p>' : "";
+  w.innerHTML = `<span class="sub">${esc(LABELS[id])}</span>${hint}<div class="chips" id="${id}Chips"></div>
+    <div class="adder"><label for="${id}Add" class="sr">Add to ${esc(LABELS[id])}</label><select id="${id}Add"></select><button type="button" class="small" id="${id}AddBtn">Add</button>
+    <input type="text" class="other" id="${id}Add_other" placeholder="Type your answer, then select Add" hidden aria-label="${esc(LABELS[id])}: other"></div>`;
+  const sel = $(id+"Add"), oth = $(id+"Add_other");
+  sel.innerHTML = `<option value="">Choose to add…</option>` + OPTS[id].map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join("") + `<option value="${OTHER}">Other…</option>`;
+  const add = ()=>{
+    let v = sel.value===OTHER ? oth.value.trim() : sel.value; if (!v) { if (sel.value===OTHER) oth.focus(); return; }
+    if (id==="skills"){ const hitS = SKILLS.find(([n,re])=>norm(n)===norm(v) || re.test(v)); const name = hitS?hitS[0]:v; if (!multi.skills[name]) multi.skills[name]="basic"; }
+    else { const label = (OPTS[id].find(o=>o[0]===v)||[v,v])[1]; if (!multi[id].some(x=>norm(x)===norm(label))) multi[id].push(label); }
+    sel.value=""; oth.value=""; oth.hidden=true; renderMulti(id); onProfileChange();
+  };
+  sel.addEventListener("change", ()=>{ oth.hidden = sel.value!==OTHER; if (!oth.hidden) oth.focus(); else if (sel.value) add(); });
+  oth.addEventListener("keydown", e=>{ if (e.key==="Enter"){ e.preventDefault(); add(); } });
+  $(id+"AddBtn").onclick = add;
+}
+function renderMulti(id){
+  const box = $(id+"Chips"); box.innerHTML = "";
+  const items = id==="skills" ? Object.keys(multi.skills).sort() : multi[id];
+  if (!items.length){ box.innerHTML = '<span class="note">None yet. Choose from the list below.</span>'; return; }
+  items.forEach(n=>{
+    const c = document.createElement("span"); c.className="chip";
+    if (id==="skills"){
+      const lvl = multi.skills[n];
+      c.innerHTML = `${esc(n)} <button type="button" class="lvl ${lvl}" aria-label="${esc(n)} level: ${lvl}. Click to switch">${lvl}</button><button type="button" aria-label="Remove ${esc(n)}">✕</button>`;
+      const [lb, rb] = c.querySelectorAll("button");
+      lb.onclick = ()=>{ multi.skills[n] = lvl==="advanced"?"basic":"advanced"; renderMulti(id); onProfileChange(); };
+      rb.onclick = ()=>{ delete multi.skills[n]; renderMulti(id); onProfileChange(); };
+    } else {
+      c.innerHTML = `${esc(n)} <button type="button" aria-label="Remove ${esc(n)}">✕</button>`;
+      c.querySelector("button").onclick = ()=>{ multi[id] = multi[id].filter(x=>x!==n); renderMulti(id); onProfileChange(); };
+    }
+    box.appendChild(c);
+  });
+}
+function buildPickers(){
+  ["deg1Level","deg1Field","deg2Level","deg2Field","gradYear","ftYears","internMonths","city","state","auth","findFilter","findInterest","levelWanted","workStyle","realEmployer","realLocation"].forEach(single);
+  ["interests","prefLocations","expTypes","skills","certs","languages"].forEach(id=>{ multiPicker(id); renderMulti(id); });
+}
+function nearestOpt(key, num){ const vals = OPTS[key].map(o=>+o[0]); if (vals.includes(num)) return String(num); return num ? String(num) : "0"; }
+
+/* ---------------- Profile form ---------------- */
+function cap(s){ return String(s).replace(/\b\w/g, c=>c.toUpperCase()); }
+function setProfile(p){
+  const d1 = p.degrees[0]||{level:0,fields:[]}, d2 = p.degrees[1]||{level:0,fields:[]};
+  setV("deg1Level", d1.level); setV("deg1Field", d1.fields[0]||"");
+  setV("deg2Level", d2.level); setV("deg2Field", d2.fields[0]||"");
+  setV("gradYear", p.gradYear||""); setV("ftYears", nearestOpt("ftYears", p.ftYears||0)); setV("internMonths", nearestOpt("internMonths", p.internMonths||0));
+  multi.expTypes = (p.expTypes||[]).map(cap); multi.skills = {...p.skills}; multi.certs = [...(p.certs||[])];
+  multi.languages = (p.languages||[]).map(cap);
+  ["expTypes","skills","certs","languages"].forEach(renderMulti);
+  const lm = String(p.location||"").match(/^\s*([^,]+?)\s*,\s*([A-Za-z]{2})\b/);
+  setV("city", lm ? lm[1] : (p.location||"")); setV("state", lm ? lm[2].toUpperCase() : "");
+  setV("auth", p.auth||"unsure");
+}
+function getProfile(){
+  const degrees = [];
+  [["deg1Level","deg1Field"],["deg2Level","deg2Field"]].forEach(([a,b])=>{
+    const raw = getV(a); let lvl = /^\d$/.test(raw) ? +raw : degreeLevelOf(raw) || (raw ? 2 : 0);
+    const f = getV(b);
+    if (lvl) degrees.push({level:lvl, fields: f ? [fieldsIn(f)[0]||norm(f)] : []});
+  });
+  const num = id => { const v = parseFloat(String(getV(id)).replace(/[^\d.]/g,"")); return isNaN(v) ? 0 : v; };
+  let st = getV("state").trim(); const stM = st.match(/^[A-Za-z]{2}$/) ? st.toUpperCase() : (Object.entries(STATES).find(([a,n])=>n===norm(st))||[""])[0];
+  const auth = getV("auth"); const authKey = ["citizen","pr","needs","unsure"].includes(auth) ? auth : /citizen/i.test(auth) ? "citizen" : /sponsor|f-?1|opt|h-?1b|visa/i.test(auth) ? "needs" : "unsure";
+  return {
+    degrees, gradYear: num("gradYear")||null, ftYears: num("ftYears"), internMonths: num("internMonths"),
+    levelWanted: getV("levelWanted")||"any", workStyle: getV("workStyle")||"any", prefLocations: multi.prefLocations.map(norm),
+    interests: multi.interests.map(norm), expTypes: multi.expTypes.map(norm), skills: {...multi.skills},
+    certs: [...multi.certs], certText: norm(multi.certs.join(", ")),
+    city: norm(getV("city")), state: stM && STATES[stM] ? stM : "",
+    auth: authKey, languages: multi.languages.map(norm)
+  };
+}
+/* ---------------- Posting reading ---------------- */
+function headerKind(t){
+  t = norm(t).replace(/[*#•\-–—]+/g," ").replace(/\s+/g," ").trim();
+  if (!t || t.length > 50) return null;
+  if (/^(preferred|nice[- ]to[- ]haves?|bonus|desired|pluses|additional qualifications|it would be great|extra credit)\b/.test(t) || /\b(preferred|nice[- ]to[- ]have|bonus)( qualifications| skills| experience)?$/.test(t)) return "preferred";
+  if (/^(requirements?|required|qualifications|minimum qualifications|basic qualifications|required qualifications|required skills|what you('| wi)ll need|what you bring|what we('re| are) looking for|must[- ]haves?|who you are|you have|you are|skills( and experience)?|eligibility|about you|your background)\b/.test(t)) return "required";
+  if (/^(responsibilities|key responsibilities|what you('| wi)ll do|duties|about (us|the role|the company|the job|the team)|the role|job description|overview|benefits|perks|compensation|pay|salary|why join|why you'll love|our company|summary|day to day|a day in the life|how to apply|equal opportunity)\b/.test(t)) return "ignore";
+  return null;
+}
+const REQ_CUE = /\b(years?|degree|bachelor|master|ph\.?d|must|required|proficien\w*|experience (with|in|using)|knowledge of|familiar\w*|certif\w*|licen[cs]\w*|authori[sz]ed|sponsor\w*|citizen\w*|fluen\w*|reside|graduat\w*)\b/i;
+
+function splitClauses(text, baseKind){
+  const out = [];
+  let t = text;
+  // parentheticals that are preferred, e.g. "(Master's preferred)"
+  t = t.replace(/\(([^)]*)\)/g, (m, inner)=>{ if (PREF_WORD.test(inner)){ out.push({text:inner.trim(), kind:"preferred", src:text}); return ""; } return m; });
+  t.split(/;|\.\s+(?=[A-Z])/).forEach(piece=>{
+    piece = piece.trim(); if (!piece) return;
+    if (PREF_WORD.test(piece) && REQ_WORD.test(piece)){
+      const parts = piece.split(/\s*,\s+(?=\S)|\s+(?:and|while|but|whereas)\s+(?=[a-z]+\s+(?:with|in|of)\b|experience|knowledge|familiarity|proficiency|a\s|an\s)/i);
+      const kinds = parts.map(p => PREF_WORD.test(p) ? "preferred" : REQ_WORD.test(p) ? "required" : null);
+      for (let i = kinds.length-1, next = baseKind; i >= 0; i--){ if (kinds[i]) next = kinds[i]; else kinds[i] = next; }
+      parts.forEach((p,i)=> out.push({text:p.trim(), kind:kinds[i], src:text}));
+    } else {
+      out.push({text:piece, kind: PREF_WORD.test(piece) ? "preferred" : baseKind, src:text});
+    }
+  });
+  return out;
+}
+
+function readPosting(text){
+  const lines = text.split(/\r?\n/).map(l=>l.replace(/^\s*(?:[-*•·▪◦●]|\d+[.)])\s*/,"").trim()).filter(Boolean);
+  let section = null; const clauses = [];
+  lines.forEach((line, idx)=>{
+    const loc = line.match(/^(?:job )?location\s*:\s*(.+)$/i);
+    if (loc){ clauses.push({text:"Location: "+loc[1], kind:"required", src:line, isLocation:true}); return; }
+    const hk = headerKind(line);
+    if (hk && !/:\s*\S/.test(line)){ section = hk; return; }
+    const colon = line.match(/^([^:]{2,45}):\s*(.+)$/);
+    if (colon){ const k = headerKind(colon[1]); if (k){ section = k; if (k!=="ignore") splitClauses(colon[2], k).forEach(c=>clauses.push(c)); return; } }
+    if (section === "ignore") return;
+    if (section === null){
+      if (idx === 0) return; // title line
+      if (!REQ_CUE.test(line)) return;
+      splitClauses(line, "required").forEach(c=>{ c.assumed = true; clauses.push(c); });
+      return;
+    }
+    splitClauses(line, section).forEach(c=>clauses.push(c));
+  });
+  return clauses;
+}
+
+/* ---------------- Checks (the rules) ---------------- */
+function mk(status, what, detail, tip, extra){ return Object.assign({status, what, detail, tip}, extra||{}); }
+
+function checkDegree(c, P, out){
+  const t = c.text;
+  if (!/\b(bachelor|master|ph\.?\s?d|doctor|degree|b\.s\.|b\.a\.|m\.s\.|mba|associate'?s)(?![a-z])/i.test(t)) return false;
+  if (/\b(pursuing|enrolled|current student)\b/i.test(t) && !/\bdegree in\b/i.test(t)) return false;
+  const lv = [];
+  if (/\bassociate'?s?\b/i.test(t)) lv.push(1);
+  if (/\b(bachelor|b\.s\.|b\.a\.|undergraduate)/i.test(t)) lv.push(2);
+  if (/\b(master|m\.s\.|mba|graduate degree)/i.test(t)) lv.push(3);
+  if (/\b(ph\.?\s?d|doctor)/i.test(t)) lv.push(4);
+  const need = lv.length ? Math.min(...lv) : 2;
+  // fields
+  let fieldText = ""; const fm = t.match(/\b(?:degree|bachelor'?s?|master'?s?|b\.s\.|b\.a\.|m\.s\.|ph\.?d\.?)(?![a-z])[^;]*?\b(?:in|of)\b\s+(.+?)(?=\bor (?:equivalent|relevant|comparable)\b|;|$)/i);
+  if (fm) fieldText = fm[1];
+  let excluded = [];
+  fieldText = fieldText.replace(/\((?:not|excluding|other than)\s+([^)]*)\)/i, (m,inner)=>{ excluded = fieldsIn(inner); return " "; });
+  const notM = fieldText.match(/\b(?:but not|excluding|other than)\s+(.+)$/i); if (notM){ excluded = excluded.concat(fieldsIn(notM[1])); fieldText = fieldText.slice(0, notM.index); }
+  const fields = fieldsIn(fieldText).filter(f=>!excluded.includes(f));
+  const related = /\b(related|similar|relevant|quantitative|technical|stem)\s+(field|discipline|area|major|degree)/i.test(t);
+  // equivalent experience
+  const eq = t.match(/\bor (?:equivalent|relevant|comparable)(?: work| professional| practical)? experience\b/i) || t.match(/\bor\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\+?\s+years?\b/i);
+  const eqYm = t.match(/\bor\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\+?\s+years?/i) || t.match(/equivalent experience\s*\(?\s*(\d+)\+?\s*years?/i);
+  const eqYears = eqYm ? wordNum(eqYm[1]) : null;
+  const internOut = internshipsExcluded(c.src||t);
+  const reqTxt = LEVEL_NAMES[need] + (fields.length ? " in " + fields.map(cap).join(", ") + (related?", or a related field":"") : "");
+  const mine = P.degrees.length ? P.degrees.map(d=>LEVEL_NAMES[d.level].replace(/^an? /,"") + (d.fields.length?" in "+d.fields.map(cap).join("/"):"")).join("; ") : "no degree listed";
+  const levelOK = P.degrees.filter(d=>d.level>=need);
+  let status, detail, tip, why = "";
+  if (!levelOK.length){
+    status = "missing"; detail = `Needs ${reqTxt}. You have: ${mine}.`;
+    tip = `This asks for ${LEVEL_NAMES[need]}. Before borrowing for another degree, check how many saved jobs you already meet, and look for roles that accept "or equivalent experience".`;
+  } else if (!fields.length){
+    status = "match"; detail = `Needs ${reqTxt}. You have: ${mine}.`;
+  } else {
+    const myFields = levelOK.flatMap(d=>d.fields);
+    const hit = myFields.find(f=>fields.includes(f));
+    const ex = myFields.find(f=>excluded.includes(f));
+    if (hit){ status="match"; detail = `Needs ${reqTxt}. Your ${cap(hit)} degree is on the list.`; }
+    else if (ex && !hit){ status="missing"; detail = `The posting excludes ${cap(ex)}. You have: ${mine}.`; tip = `This posting rules out ${cap(ex)} by name. Look for roles that list your field, or a second major or certificate in one of: ${fields.map(cap).join(", ")}.`; }
+    else if (related){ status="confirm"; detail = `Needs ${reqTxt}. Your field (${myFields.map(cap).join(", ")||"not given"}) is not on the list, but the posting accepts a related field.`; tip = `Ask the recruiter whether ${myFields.map(cap).join(" or ")||"your field"} counts as related, and list relevant courses (statistics, programming, analytics) near the top of your CV.`; }
+    else { status="missing"; detail = `Needs ${reqTxt}. You have: ${mine}.`; tip = `Your field isn't on this posting's list. Look for roles that name your field, or show the same training through coursework and a certificate.`; }
+  }
+  if (status !== "match" && eq){
+    const yrs = P.ftYears + (internOut ? 0 : P.internMonths/12);
+    if (eqYears != null){
+      if (P.ftYears >= eqYears){ status="match"; why = ` Met through experience: you have ${fmtYears(P.ftYears)} full-time; the posting accepts ${eqYears}+ years instead of the degree.`; tip = ""; }
+      else if (!internOut && yrs >= eqYears){ status="confirm"; why = ` You reach ${eqYears} years of equivalent experience only if internships count.`; tip = "Ask the recruiter whether internships count as equivalent experience."; }
+      else why = ` The posting also accepts ${eqYears}+ years of experience instead; you have ${fmtYears(P.ftYears)} full-time.`;
+    } else { status = "confirm"; why = " The posting accepts equivalent experience but doesn't say how much."; tip = "Ask the recruiter how much experience they treat as equivalent, and describe your most relevant work in detail."; }
+  }
+  out.push(mk(status, "Degree", detail + why, tip, {kind:"degree"}));
+  return true;
+}
+function internshipsExcluded(t){
+  return /intern\w*[^.;]*\b(do not|don't|does not|doesn't|not|won't|will not)\b[^.;]*\bcount/i.test(t) || /\b(excluding|not including)\s+intern/i.test(t) || /\b(full[- ]time|professional|post[- ]?grad\w*|post[- ]college|paid)\b/i.test(t);
+}
+function checkYears(c, P, out, degreeDone){
+  const t = c.text;
+  const m = t.match(/\b(?:at least|minimum of|min\.?)?\s*(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\s*\+?\s*(?:(?:-|–|to)\s*(\d+)\s*\+?\s*)?years?\b(?!\s*old)/i);
+  if (!m) return false;
+  if (degreeDone && /\bor\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten)\+?\s+years?/i.test(t)) return false;
+  if (/\b(graduat\w*|degree)\b[^.;]{0,30}\bwithin\b/i.test(t)) return false;
+  const need = wordNum(m[1]); const max = m[2] ? +m[2] : null;
+  const src = c.src||t; const internOut = internshipsExcluded(src), internIn = /internships?\s+(count|are counted|included|accepted|welcome)/i.test(src) && !internOut;
+  const intY = P.internMonths/12, total = P.ftYears + intY;
+  const typeM = t.match(/years?\s+(?:of\s+)?(?:(?:professional|relevant|related|full[- ]time|hands[- ]on|work)\s+)*(?:experience\s+)?(?:in|as|with|of)\s+(?:an?\s+)?([a-z][a-z /&-]{2,40}?)(?:\s+role|\s+position|\s+setting|\s+environment)?(?=[,;.(]|$|\s+(?:or|and|is|are|preferred|required)\b)/i) || t.match(/years?\s+of\s+([a-z][a-z /&-]{2,30}?)\s+experience/i);
+  let type = typeM ? norm(typeM[1]).replace(/\b(experience|work)\b/g,"").trim() : "";
+  if (/^(the|a|an|this|similar|related|relevant)$/.test(type)) type = "";
+  const label = need===0 && max!=null ? `0–${max} years` : `${need}+ years`;
+  let status, detail, tip = "";
+  const mine = `You have ${fmtYears(P.ftYears)} full-time and ${P.internMonths} months of internships.`;
+  if (P.ftYears >= need || need === 0){ status = "match"; detail = `Needs ${label}. ${mine}`; }
+  else if (!internOut && total >= need){
+    if (internIn){ status = "match"; detail = `Needs ${label}; the posting says internships count. ${mine}`; }
+    else { status = "confirm"; detail = `Needs ${label}. You reach it only if internships count. ${mine}`; tip = "The posting doesn't say whether internships count. Ask the recruiter, and describe your internships with real responsibilities and results."; }
+  } else {
+    status = "missing"; detail = `Needs ${label}${internOut?" of full-time experience (internships don't count here)":""}. ${mine}`;
+    tip = `You're ${fmtYears(Math.max(0, need - (internOut?P.ftYears:total)))} short. Focus on roles that say "entry level" or "0–2 years", or gain experience through a contract role or extended internship first.`;
+  }
+  if (max != null && P.ftYears > max + 1){ status = "confirm"; detail += ` The range tops out at ${max} years.`; tip = "This looks like an early-career role. Check whether they'd consider someone with more experience."; }
+  if (type && status === "match"){
+    const words = type.split(/[\s/&-]+/).filter(w=>w.length>=4);
+    const ok = P.expTypes.some(e=>words.some(w=>e.includes(w) || w.includes(e.split(" ")[0])));
+    if (!ok){ status = "confirm"; detail += ` It must be experience in "${type}".`; tip = `Confirm your experience is in ${type}. If it is, add "${type}" under "Types of experience" in your profile.`; }
+    else detail += ` Type: ${type} (on your profile).`;
+  }
+  out.push(mk(status, "Experience", detail, tip, {kind:"years"}));
+  return true;
+}
+function checkSkills(c, P, out, skipText){
+  let t = c.text; if (skipText) t = t.replace(skipText, " ");
+  const found = SKILLS.filter(([n,re])=>re.test(t));
+  if (!found.length) return false;
+  const advanced = /\b(advanced|expert|proficien\w*|strong|deep|extensive|fluent|hands-on expertise)\b/i.test(t);
+  const pos = n => { const m = t.match(SKILLS.find(s=>s[0]===n)[1]); return m ? m.index : 0; };
+  const sa = t.search(/\b(such as|e\.g\.?|for example|including|like)\b/i);
+  const groups = [];
+  const before = found.filter(([n])=> sa<0 || pos(n) < sa).map(([n])=>n);
+  const after = sa<0 ? [] : found.filter(([n])=>pos(n) > sa).map(([n])=>n);
+  // "X or Y" among the "before" skills → any one
+  if (before.length > 1 && /\bor\b/i.test(t.slice(0, sa<0 ? t.length : sa)) && !/\band\b/i.test(t.slice(0, sa<0 ? t.length : sa))) groups.push({any:before});
+  else before.forEach(n=>groups.push({any:[n]}));
+  if (after.length) groups.push({any:after, example:true});
+  groups.forEach(g=>{
+    const has = g.any.filter(n=>P.skills[n]);
+    const lvlOK = has.filter(n=> !advanced || P.skills[n]==="advanced");
+    const name = g.any.length>1 ? "One of " + g.any.join(", ") : g.any[0];
+    let status, detail, tip = "";
+    if (lvlOK.length){ status="match"; detail = `${advanced?"Needs proficiency. ":""}You have ${lvlOK.map(n=>n+" ("+P.skills[n]+")").join(", ")}.`; }
+    else if (has.length){ status="missing"; detail = `Needs proficiency; your profile marks ${has.join(", ")} as basic.`; tip = `Show depth in ${has[0]}: build one project that uses it end to end and state the result (for example, "cut report time from 3 hours to 20 minutes"). If you already use it confidently, switch it to advanced in your profile. ${SKILL_TIPS[has[0]]||""}`; }
+    else { status="missing"; detail = `Not found in your profile.`; const target = g.any[0]; tip = `${g.any.length>1?"Learn one of these; "+target+" is a good start. ":"Learn "+target+". "}${SKILL_TIPS[target]||"Take a short course, then add one project that uses it to your CV."}`; }
+    out.push(mk(status, name, detail, tip, {kind:"skill"}));
+  });
+  return true;
+}
+function checkCerts(c, P, out){
+  const t = c.text; let any = false;
+  const later = /\b(within\s+\d+\s+(months?|years?|days?)|eligible (for|to)|willing(ness)? to (obtain|earn|get)|ability to obtain|obtain\w* within|upon hire|after hire)\b/i.test(t);
+  CERTS.forEach(([n,re])=>{
+    if (!re.test(t)) return; any = true;
+    const has = P.certs.some(x=>re.test(x) || norm(x)===norm(n)) || re.test($("cvText").value);
+    const isLicence = /licen/i.test(n) || /\blicen[cs]/i.test(t);
+    if (has) out.push(mk("match", n, "Listed on your profile.", "", {kind:"cert"}));
+    else if (later) out.push(mk("confirm", n, "Not on your profile, but the posting lets you earn it after hiring or within a set time.", `Check you can complete ${n} in the time allowed and mention your plan in your cover letter.`, {kind:"cert"}));
+    else out.push(mk("missing", n, "Not on your profile.", isLicence ? `This is a licence requirement; experience can't replace it. Check your state board's requirements and exam dates for ${n}.` : `Look up the issuing body's exam requirements, cost and dates for ${n}, and add it to your CV once earned.`, {kind:"cert"}));
+  });
+  if (!any && /\b(driver'?s licen[cs]e|valid licen[cs]e)\b/i.test(t)){ any = true; out.push(mk("confirm","Driver's licence","We can't check this from a CV.","Confirm you hold a valid driver's licence and, if needed, access to a car.",{kind:"cert"})); }
+  else if (!any && /\b(certif\w*|licen[cs]\w*)\b/i.test(t) && !/certificate program/i.test(t)){ any = true; out.push(mk("confirm","Certificate or licence","The posting asks for a certificate or licence we couldn't identify.","Read this line and check whether you hold it; if not, see how long it takes to get.",{kind:"cert"})); }
+  return any;
+}
+function checkAuth(c, P, out){
+  const t = c.text;
+  if (!/\b(authori[sz]\w*|sponsor\w*|citizen\w*|green card|permanent resident|clearance|visa|eligible to work|right to work)\b/i.test(t)) return false;
+  const lbl = {citizen:"U.S. citizen", pr:"no sponsorship needed", needs:"will need sponsorship", unsure:"not set"}[P.auth];
+  if (/\bclearance\b/i.test(t)){
+    const has = /\bclearance\b/i.test($("cvText").value);
+    const obtain = /\b(ability|able|eligible) to (obtain|get)\b/i.test(t);
+    out.push(mk(has?"match":obtain?"confirm":"missing","Security clearance", has?"Your CV mentions a clearance.": obtain?"You must be able to get a clearance; usually this needs U.S. citizenship.":"An active clearance is required; none is on your CV.", has?"": obtain?"Confirm you're eligible for a U.S. security clearance (usually U.S. citizens only).":"Roles needing an active clearance usually hire people who already hold one. Look for roles that sponsor clearances.",{kind:"auth"}));
+    return true;
+  }
+  if (/\b(will|can|able to) sponsor|sponsorship (is )?(available|provided|offered)|visa sponsorship: yes\b/i.test(t)){ out.push(mk("match","Work authorization","The employer says it offers sponsorship.","",{kind:"auth"})); return true; }
+  const citizenOnly = /\b(u\.?s\.? citizen(ship)?|citizens only)\b/i.test(t) && /\b(must|required|only|requires)\b/i.test(t);
+  const noSponsor = /\bwithout\b[^.;]{0,30}\bsponsor|\b(no|not|unable to|cannot|can't|will not|won't|does not|doesn't)\b[^.;]{0,25}\bsponsor|\bsponsorship (is )?not\b/i.test(t);
+  let status, detail, tip = "";
+  if (citizenOnly){
+    status = P.auth==="citizen" ? "match" : P.auth==="unsure" ? "confirm" : "missing";
+    detail = `Requires U.S. citizenship. Your profile: ${lbl}.`;
+    if (status!=="match") tip = status==="confirm" ? "Set your work authorization in your profile." : "This role is limited to U.S. citizens. Save your effort for roles without this limit.";
+  } else if (noSponsor){
+    status = (P.auth==="citizen"||P.auth==="pr") ? "match" : P.auth==="needs" ? "missing" : "confirm";
+    detail = `Must work without visa sponsorship${/future/i.test(t)?", now or in the future":""}. Your profile: ${lbl}.`;
+    if (status==="missing") tip = "This employer won't sponsor. Prioritise employers that do; your school's international student office can explain your OPT/STEM OPT options and timelines.";
+    if (status==="confirm") tip = "Set your work authorization in your profile so we can check this.";
+  } else {
+    status = (P.auth==="citizen"||P.auth==="pr") ? "match" : "confirm";
+    detail = `Must be authorized to work in the U.S. Your profile: ${lbl}.`;
+    if (status==="confirm") tip = P.auth==="needs" ? "You may be authorized now (e.g. on OPT) but need sponsorship later. Ask the recruiter whether they sponsor before you invest time." : "Set your work authorization in your profile so we can check this.";
+  }
+  out.push(mk(status, "Work authorization", detail, tip, {kind:"auth"}));
+  return true;
+}
+function statesIn(t){
+  const s = new Set();
+  (t.match(/\b[A-Z]{2}\b/g)||[]).forEach(a=>{ if (STATES[a] && !/^(IT|OR|IN|ME|OK|HI|AS|US)$/.test(a)) s.add(a); });
+  (t.match(/\b(?:[A-Z]{2})(?=\s*(?:,|or|and|\)|$))/g)||[]).forEach(a=>{ if (STATES[a] && a!=="US") s.add(a); });
+  const low = t.toLowerCase();
+  Object.entries(STATES).forEach(([a,n])=>{ if (new RegExp("\\b"+n+"\\b").test(low) && !(n==="washington" && /washington,? d\.?c/.test(low))) s.add(a); });
+  return [...s];
+}
+function checkLocation(c, P, out){
+  const t = c.text;
+  const residence = /\b(reside|residing|residents? of|live (?:in|within)|located in|must be based|based in|commut\w*|relocat\w*|on-?site|in[- ]office|in person|hybrid|remote)\b/i.test(t);
+  if (!residence && !c.isLocation) return false;
+  const st = statesIn(t);
+  const where = P.city ? `${cap(P.city)}${P.state?", "+P.state:""}` : "not set";
+  const remote = /\bremote\b/i.test(t) && !/\b(hybrid|on-?site|in[- ]office|in person|commut)/i.test(t);
+  const cityM = c.isLocation ? t.replace(/^location:\s*/i,"").match(/^([A-Z][A-Za-z .'-]+?)\s*(?:,|\(|$)/) : (t.match(/(?:commuting distance (?:of|to|from)|office in|based in|located in|on-?site in|in[- ]office in)\s+(?:our\s+)?([A-Z][A-Za-z.]+(?:\s[A-Z][A-Za-z.]+)*)/) || t.match(/\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)?)\s+(?:office|headquarters|HQ|campus)\b/));
+  const city = cityM ? cityM[1].replace(/^(Our|The)\s+/,"").trim() : "";
+  let status, detail, tip = "";
+  if (/\b(reside|residing|residents? of|live in|must be (?:based|located) in)\b/i.test(t) && st.length){
+    status = !P.state ? "confirm" : st.includes(P.state) ? "match" : "missing";
+    detail = `Must live in ${st.join(", ")}. You: ${where}.`;
+    if (status==="missing") tip = `Apply only if you can move to ${st.join(" or ")} before starting. Remote roles often have this limit for tax reasons, so check it before applying.`;
+    if (status==="confirm") tip = "Add where you live to your profile.";
+  } else if (remote){
+    const usOnly = /\b(U\.?S\.?|United States|USA)\b/.test(t);
+    if (st.length){ status = !P.state?"confirm": st.includes(P.state)?"match":"missing"; detail = `Remote, limited to ${st.join(", ")}. You: ${where}.`; if(status==="missing") tip = `This remote role is limited to ${st.join(", ")}. Apply only if you can relocate.`; }
+    else if (usOnly){ status = P.state ? "match" : "confirm"; detail = `Remote within the U.S. You: ${where}.`; if (status==="confirm") tip="Add where you live to your profile."; }
+    else { status = "match"; detail = "Remote, and we found no location limit. Check the full posting for state or time-zone limits."; }
+  } else if (city){
+    const same = P.city && norm(city) === P.city;
+    status = same ? "match" : "confirm";
+    const mode = /\bhybrid\b/i.test(t) ? "Hybrid" : /\bremote\b/i.test(t) ? "Remote/hybrid" : "On-site";
+    const days = (t.match(/(\d)\s*days?\s*(?:\/|a|per)\s*week/i)||[])[1];
+    detail = `${mode} in ${city}${days?`, ${days} days a week`:""}. You: ${where}.`;
+    if (!same) tip = `Confirm you can get to ${city}${days?` ${days} days a week`:""} or would relocate. If so, say so in your application.`;
+  } else if (st.length){
+    status = !P.state ? "confirm" : st.includes(P.state) ? "match" : "confirm";
+    detail = `Location: ${st.join(", ")}. You: ${where}.`;
+    if (status!=="match") tip = "Check whether the job is on-site and whether you'd relocate.";
+  } else {
+    status = "confirm"; detail = `Location rule: "${t.replace(/^location:\s*/i,"")}". You: ${where}.`; tip = "Check the work location and whether you can commute or relocate.";
+  }
+  out.push(mk(status, "Location", detail, tip, {kind:"location"}));
+  return true;
+}
+function checkGrad(c, P, out){
+  const t = c.text;
+  if (!/\b(graduat\w*|class of|degree (?:completion|conferred)|recent grad\w*|new grad\w*)\b/i.test(t)) return false;
+  const years = (t.match(/\b20\d{2}\b/g)||[]).map(Number);
+  let status, detail, tip = "";
+  if (!P.gradYear){ status="confirm"; detail="The posting has a graduation window; your graduation year isn't set."; tip="Add your graduation year to your profile."; }
+  else if (years.length){
+    const lo = Math.min(...years), hi = Math.max(...years);
+    const ok = years.length===1 ? (/\b(by|before)\b/i.test(t) ? P.gradYear<=lo : /\b(after|or later)\b/i.test(t) ? P.gradYear>=lo : P.gradYear===lo) : (P.gradYear>=lo && P.gradYear<=hi);
+    status = ok ? "match" : "missing"; detail = `Graduation window: ${lo===hi?lo:lo+"–"+hi}. You graduate in ${P.gradYear}.`;
+    if (!ok) tip = "Your graduation date falls outside this program's window. Look for the same company's program for your class year.";
+  } else { status="confirm"; detail = `The posting has a graduation rule we couldn't turn into dates. You graduate in ${P.gradYear}.`; tip = "Check the graduation window in this line against your date."; }
+  out.push(mk(status, "Graduation date", detail, tip, {kind:"grad"}));
+  return true;
+}
+function checkLanguage(c, P, out){
+  const t = norm(c.text);
+  if (!/\b(fluen\w*|bilingual|proficien\w*|speak|written and spoken|native)\b/.test(t)) return false;
+  const langs = LANGS.filter(L=>new RegExp("\\b"+L+"\\b").test(t));
+  if (!langs.length) return false;
+  langs.forEach(L=>{
+    const has = P.languages.some(x=>x.includes(L) || (L==="chinese" && /mandarin|cantonese/.test(x)) || (L==="mandarin" && /chinese/.test(x)));
+    out.push(mk(has?"match":"missing", cap(L), has?"On your profile.":"Not on your profile.", has?"":`This role needs ${cap(L)}. If you speak it, add it to your profile; if not, look for roles without this requirement.`, {kind:"language"}));
+  });
+  return true;
+}
+
+function evaluate(postingText, P){
+  const clauses = readPosting(postingText);
+  const results = [];
+  clauses.forEach(c=>{
+    const out = [];
+    if (/^(?:and\s+)?(internships?|co-?ops?|part[- ]time)\b[^.]*\bcount/i.test(c.text)) return;
+    const isLoc = checkLocation(c, P, out);
+    const isDeg = !c.isLocation && checkDegree(c, P, out);
+    let skipText = null;
+    if (isDeg){ const fm = c.text.match(/\b(?:in|of)\b\s+(.+?)(?=\bor (?:equivalent|relevant)\b|;|$)/i); if (fm) skipText = fm[1]; }
+    if (!c.isLocation){
+      checkGrad(c, P, out);
+      checkYears(c, P, out, isDeg);
+      checkSkills(c, P, out, skipText);
+      checkCerts(c, P, out);
+      checkAuth(c, P, out);
+      checkLanguage(c, P, out);
+    }
+    if (!out.length){
+      if (SOFT.test(c.text)) out.push(mk("info","Soft skill","Not checked automatically. Show it with an example in your CV or interview.","",{kind:"soft"}));
+      else if (c.text.split(/\s+/).length >= 3) out.push(mk("confirm","Other requirement","We couldn't check this line automatically.","Read this line yourself and decide whether you meet it.",{kind:"other"}));
+    }
+    out.forEach(r=>{ r.pref = c.kind==="preferred"; r.quote = c.text; r.assumed = !!c.assumed; results.push(r); });
+  });
+  return summarize(results);
+}
+// Only required lines decide the verdict (unchanged rule).
+function summarize(results){
+  const req = results.filter(r=>!r.pref && r.status!=="info");
+  const n = s => req.filter(r=>r.status===s).length;
+  let verdict;
+  if (!req.length) verdict = "cant";
+  else if (n("missing")) verdict = "toward";
+  else if (n("confirm")) verdict = "needs";
+  else verdict = "ready";
+  return {results, verdict, met:n("match"), total:req.length, missing:n("missing"), confirm:n("confirm")};
+}
+
+/* ---------------- AI-read postings (Claude extracts; the rules above decide) ---------------- */
+function aiPostingText(ai){
+  const L = [], loc = ai.location || {};
+  if (loc.work_mode==="remote") L.push("Location: Remote");
+  else if (loc.city){
+    const mode = loc.work_mode==="hybrid" ? "Hybrid" : loc.work_mode==="onsite" ? "On-site" : "";
+    const extra = [mode, loc.days_in_office ? `${loc.days_in_office} days/week` : ""].filter(Boolean).join(", ");
+    L.push(`Location: ${loc.city}${loc.state ? ", "+loc.state : ""}${extra ? ` (${extra})` : ""}`);
+  }
+  const reqs = ai.requirements || [];
+  L.push("Requirements"); reqs.filter(r=>r.kind!=="preferred").forEach(r=>L.push("- "+r.statement));
+  L.push("Preferred qualifications"); reqs.filter(r=>r.kind==="preferred").forEach(r=>L.push("- "+r.statement));
+  return L.join("\n");
+}
+function evaluateWithAI(rawText, ai, P){
+  const a = evaluate(aiPostingText(ai), P);
+  const reqs = ai.requirements || [];
+  a.results.forEach(r=>{
+    const q = norm(r.quote);
+    const src = reqs.find(x=>{ const st = norm(x.statement); return st && (st.includes(q) || q.includes(st)); });
+    if (src){ r.source = src.quote; r.grounded = src.grounded; r.unsure = src.unsure; }
+    r.via = "ai";
+  });
+  // Safety net: anything the rules find as required in the original text that the AI reading
+  // doesn't have as required still counts, so an AI omission can never produce a wrong "Ready".
+  const keyOf = r => r.kind + "|" + (["skill","cert","language"].includes(r.kind) ? norm(r.what) : "");
+  const aiReq = new Set(a.results.filter(r=>!r.pref).map(keyOf));
+  const raw = evaluate(rawText, P);
+  let added = 0;
+  raw.results.filter(r=>!r.pref && !["other","soft"].includes(r.kind) && !aiReq.has(keyOf(r))).forEach(r=>{
+    a.results.push({...r, via:"rules", source:r.quote}); added++;
+  });
+  const out = summarize(a.results); out.ai = ai; out.rulesAdded = added;
+  return out;
+}
+const aiJobCache = new Map();   // posting text hash -> {pending} | {ai} | {error}
+function aiJobOn(){ return AI.ready && $("useAIJob").checked; }
+async function fetchJobAI(text){
+  const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 60000);
+  try{
+    const res = await apiPost(JOB_READER_URL, JSON.stringify({jobText:text}), ctrl.signal);
+    const body = await res.json().catch(()=>({}));
+    if (!res.ok || !body.job) throw new Error(body.error || "The AI reader didn't answer.");
+    return body.job;
+  } catch(e){ throw new Error(e.name==="AbortError" ? "The AI reader took too long." : e.message); }
+  finally { clearTimeout(t); }
+}
+async function checkAI(){
+  const set = (ready, reason)=>{
+    AI.ready = ready; AI.reason = reason;
+    ["useAI","useAIJob"].forEach(id=>{ const el = $(id); el.disabled = !ready; el.checked = ready; el.parentElement.title = ready ? "" : reason; });
+    $("aiStatus").textContent = reason;
+  };
+  set(false, "Checking whether AI reading is available…");
+  if (!/^https?:$/.test(location.protocol)){ set(false, "AI reading is off: open this page from the CareerPath server to use it. Rules still work."); return; }
+  if (PUBLIC_SITE && !API_BASE){ set(false, "AI reading is off: this copy of the site isn't connected to the AI server yet. Rules still work."); runCheck(false); return; }
+  try{
+    const r = await fetch(API_BASE + "/api/health", {cache:"no-store"}); const b = await r.json();
+    AI.mock = !!b.mock;
+    set(!!b.ai, b.ai ? (b.mock ? "AI reading on (test mode: canned results, no API calls)." : PUBLIC_SITE ? `AI reading on (up to ${(b.limits&&b.limits.per_visitor_per_day)||20} readings per person per day).` : "AI reading on.") : `AI reading is off: ${b.reason || "not available"} Rules still work.`);
+  } catch(e){ set(false, "AI reading is off: the CareerPath server isn't reachable. Rules still work."); }
+  runCheck(false);
+}
+
+/* ---------------- Example job list for "Find jobs for me" (fictional) ---------------- */
+const LIBRARY = [
+  {id:"1", category:"Data & analytics", location:"Chicago, IL · Hybrid", days:3, title:EXAMPLE_JOB.title, company:EXAMPLE_JOB.company, text:EXAMPLE_JOB.text},
+  {id:"2", category:"Data & analytics", location:"Remote (U.S.)", days:9, title:"Data Analyst", company:"Prairie Insights (example)", text:`Data Analyst (Remote, U.S.)
+Location: Remote within the U.S.
+
+Requirements
+- Bachelor's degree in Statistics, Mathematics, Economics, Computer Science, or related field
+- 0-2 years of experience in data analysis; internships count
+- Experience with SQL
+- Experience with Python or R
+- Visa sponsorship available
+
+Preferred qualifications
+- Experience with Tableau or Power BI`},
+  {id:"3", category:"Business analysis", location:"Schaumburg, IL · On-site", days:12, title:"Business Analyst", company:"Northbrook Logistics (example)", text:`Business Analyst
+Location: Schaumburg, IL (On-site)
+
+Requirements
+- Bachelor's degree in Business, Business Analytics, Supply Chain Management, or related field
+- 1+ years of experience; internships count
+- Advanced Excel skills
+- Working knowledge of SQL
+- Must be authorized to work in the U.S.
+
+Preferred qualifications
+- Tableau or Power BI`},
+  {id:"4", category:"Marketing", location:"Chicago, IL · Hybrid", days:6, title:"Marketing Analyst", company:"Wicker Park Goods (example)", text:`Marketing Analyst
+Location: Chicago, IL (Hybrid, 2 days/week in office)
+
+Requirements
+- Bachelor's degree in Marketing, Business, Economics, or related field
+- 0-1 years of experience
+- Google Analytics
+- Excel
+- Strong communication skills
+
+Nice to have
+- SQL`},
+  {id:"5", category:"Finance & accounting", location:"Chicago, IL · On-site", days:15, title:"Financial Analyst I", company:"Riverbend Capital (example)", text:`Financial Analyst I
+Location: Chicago, IL (On-site)
+
+Requirements
+- Bachelor's degree in Finance, Accounting, or Economics
+- 0-2 years of experience
+- Advanced Excel
+- Financial modeling
+- Must be authorized to work in the U.S. without sponsorship
+
+Preferred qualifications
+- CFA Level I candidate`},
+  {id:"6", category:"Operations & supply chain", location:"Chicago, IL · On-site", days:20, title:"Operations Analyst", company:"Midway Freight Co. (example)", text:`Operations Analyst
+Location: Chicago, IL (On-site)
+
+Requirements
+- Bachelor's degree
+- 1+ years of full-time professional experience
+- Excel
+
+Preferred qualifications
+- SQL`},
+  {id:"7", category:"Research", location:"Chicago, IL · Hybrid", days:8, title:"Research Assistant, Health Economics", company:"Lakeview Policy Institute (example)", text:`Research Assistant, Health Economics
+Location: Chicago, IL (Hybrid)
+
+Requirements
+- Bachelor's degree in Economics, Public Health, or Statistics
+- Graduated in 2025 or 2026
+- Experience with Stata or R
+
+Preferred qualifications
+- Python`},
+  {id:"8", category:"Data & analytics", location:"Chicago, IL · Hybrid", days:25, title:"Product Analyst", company:"Loop Learning Apps (example)", text:`Product Analyst
+Location: Chicago, IL (Hybrid, 3 days/week)
+
+Requirements
+- 2+ years of experience in product or data analytics
+- Advanced SQL
+- A/B testing
+
+Preferred qualifications
+- Python`},
+  {id:"9", category:"Operations & supply chain", location:"Naperville, IL · On-site", days:58, title:"Supply Chain Analyst", company:"Fox River Manufacturing (example)", text:`Supply Chain Analyst
+Location: Naperville, IL (On-site)
+
+Requirements
+- Bachelor's degree in Supply Chain Management, Industrial Engineering, or Business
+- 0-2 years of experience
+- Excel
+
+Preferred qualifications
+- SAP`},
+  {id:"10", category:"Software engineering", location:"Chicago, IL · Hybrid", days:5, title:"Junior Software Engineer", company:"Halsted Tech (example)", text:`Junior Software Engineer
+Location: Chicago, IL (Hybrid)
+
+Requirements
+- Bachelor's degree in Computer Science or related field
+- 0-2 years of experience
+- Python or Java
+- Git`}
+].map(j=>({...j, postedDate: daysAgoISO(j.days)}));
+
+/* ---------------- Dates ---------------- */
+function daysAgoISO(n){ const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()-n); return d.toISOString().slice(0,10); }
+function ageDays(iso){ if (!iso) return null; const t = Date.parse(iso+"T12:00:00"); if (isNaN(t)) return null; return Math.max(0, Math.round((Date.now()-t)/86400000)); }
+function postedFromText(text){
+  const m = text.match(/\b(?:date\s+)?posted\s*(?:on)?\s*:?\s*(today|just now|yesterday|(\d+)\+?\s*(hours?|days?|weeks?|months?)\s+ago|([A-Z][a-z]{2,8}\.?\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4}))/i);
+  if (!m) return null;
+  if (/today|just now|hours?/i.test(m[1])) return daysAgoISO(0);
+  if (/yesterday/i.test(m[1])) return daysAgoISO(1);
+  if (m[2]) return daysAgoISO(+m[2] * (/week/i.test(m[3])?7:/month/i.test(m[3])?30:1));
+  const t = Date.parse(m[4]); return isNaN(t) ? null : new Date(t).toISOString().slice(0,10);
+}
+function postedLabel(iso){ const a = ageDays(iso); if (a==null) return "Posting date unknown"; return a===0 ? "Posted today" : `Posted ${a} day${a===1?"":"s"} ago`; }
+const STALE_DAYS = 45;
+
+/* ---------------- Rendering ---------------- */
+const VERDICT = {
+  ready:{cls:"v-ready", pill:"p-ready", name:"Ready", text:"You meet every required item we found. Read the posting once more before you apply."},
+  toward:{cls:"v-toward", pill:"p-toward", name:"Work toward", text:""},
+  needs:{cls:"v-confirm", pill:"p-needs", name:"Needs confirmation", text:""},
+  cant:{cls:"v-cant", pill:"p-cant", name:"Can't confirm", text:"We didn't find any requirement lines we could check. Make sure you pasted the requirements section, or read the posting yourself."}
+};
+VERDICT.recheck = {cls:"v-recheck", pill:"p-recheck", name:"Needs recheck", text:""};   // Real Jobs only (45-day policy)
+const VRANK = {ready:0, needs:1, toward:2, recheck:3, cant:4};
+const STATUS_NAME = {match:"Match", missing:"Missing", confirm:"Check", info:"Not checked"};
+function hash(str){ let h = 5381; for (let i=0;i<str.length;i++) h = ((h<<5)+h + str.charCodeAt(i))|0; return (h>>>0).toString(36); }
+function genericTip(r){ return r.status==="missing" ? `Close this gap before you apply: get evidence of "${r.what}" onto your CV, or look for roles that don't ask for it.` : "Read this line yourself and confirm whether you meet it."; }
+function stepId(job, r, group){ return "step-" + job.key + "-" + hash(group + "|" + r.what + "|" + (r.tip||"")); }
+
+function render(res, job, el){
+  const v = VERDICT[res.verdict];
+  const recheck = res.verdict==="recheck", base = recheck ? res.provisional : res.verdict;   // base = the (provisional) rule result
+  let text = VERDICT[base].text;
+  if (base==="toward") text = `${res.missing} required item${res.missing>1?"s are":" is"} missing${res.confirm?`, and ${res.confirm} need${res.confirm>1?"":"s"} your check`:""}. Your work-forward path below has one step for each missing item.`;
+  if (base==="needs") text = `Nothing required is missing, but ${res.confirm} item${res.confirm>1?"s need":" needs"} your check before you can count yourself eligible.`;
+  const prov = recheck ? " (provisional)" : "";
+  const req = res.results.filter(r=>!r.pref), pref = res.results.filter(r=>r.pref);
+  const cnt = (list,s)=>list.filter(r=>r.status===s).length;
+  const row = r => `<div class="req s-${r.status}">
+      <div class="head"><span class="what">${esc(r.what)}</span><span class="pill p-${r.status}">${STATUS_NAME[r.status]}</span></div>
+      <div class="quote">${esc(r.quote)}${r.assumed?' <em>(no requirements heading found; treated as required)</em>':''}</div>
+      ${r.source && norm(r.source)!==norm(r.quote) ? `<div class="quote">From the posting: “${esc(r.source)}”</div>` : ""}
+      ${r.via==="ai" && r.grounded===false ? '<div class="note">The AI\'s quote wasn\'t found word for word in the posting. Check this line yourself.</div>' : ""}
+      ${r.unsure ? '<div class="note">The posting doesn\'t make clear whether this is required, so it counts as required.</div>' : ""}
+      ${r.via==="rules" ? '<div class="note">Found by the rules in the original text but not in the AI reading, so it still counts.</div>' : ""}
+      <div class="detail">${esc(r.detail)}</div>
+      ${r.tip && r.status!=="match" ? `<div class="tip"><b>Next step:</b> ${esc(r.tip)}</div>`:""}
+    </div>`;
+  // one work-forward step per missing required item
+  const work = req.filter(r=>r.status==="missing").map(r=>({r, group:"work", tip:r.tip||genericTip(r)}));
+  // double-check: items the rules couldn't confirm, plus an old or undated posting
+  const check = req.filter(r=>r.status==="confirm").map(r=>({r, group:"check", tip:r.tip||genericTip(r)}));
+  const age = ageDays(job.postedDate);
+  if (job.source==="real"){ /* posting age for real jobs is handled by the 45-day policy (Needs recheck) */ }
+  else if (age==null) check.unshift({r:{what:"Posting date", status:"confirm"}, group:"check", tip:"We don't know when this job was posted. Check it's still open before you spend time on an application."});
+  else if (age > STALE_DAYS) check.unshift({r:{what:"Posting date", status:"confirm"}, group:"check", tip:`Posted ${age} days ago, more than ${STALE_DAYS} days before today. Check the job is still open before you spend time on an application.`});
+  const bonus = pref.filter(r=>r.status==="missing" && r.tip).map(r=>({r, group:"bonus", tip:r.tip}));
+  const starred = !!store.items.find(i=>i.id==="job-"+job.key);
+  const stepLi = (s, i) => { const id = stepId(job, s.r, s.group); const on = !!store.items.find(x=>x.id===id);
+    return `<li><span class="kind">${s.group==="work"?"Step "+(i+1)+" · Missing":s.group==="check"?"Double-check":"Extra credit"} · ${esc(s.r.what)}</span><br>${esc(s.tip)}
+      <div class="row"><button type="button" class="small savestep" aria-pressed="${on}" data-step="${esc(id)}" data-group="${s.group}" data-what="${esc(s.r.what)}" data-tip="${esc(s.tip)}">${on?"Saved to My plan":"Save step"}</button></div></li>`; };
+  const canAnalyze = !PUBLIC_SITE && job.source==="real" && (!job.ai || job.ai.model==="mock") && AI.ready;
+  const left = Math.max(0, (REAL.analysis.cap||0) - (REAL.analysis.today||0));
+  const realBox = job.source==="real" ? `<div class="realbox">
+      <div><b>${esc(job.title)}</b> · ${esc(job.company)} · ${esc(job.location||"")} · ${esc(WORKPLACE_NAME[job.workplace]||"")}</div>
+      <div class="note">Real job · Source: ${esc(job.company)} careers board via the ${esc(PROVIDER_NAME[job.provider]||"official job board API")}</div>
+      <div class="note"><b>Availability:</b> listed on the official board when last checked, ${esc(fmtChecked(job.lastChecked))}.</div>
+      <div class="note"><b>Freshness:</b> ${esc(firstPubLabel(job))}${job.recheck ? " · Needs recheck" : ""}</div>
+      <div class="note"><b>Eligibility:</b> ${PUBLIC_SITE ? (job.ai ? "based on CareerPath's requirement summary (not the employer's text); the rules made the decision." : "no requirement summary yet: read the official posting.") : job.ai ? (job.ai.model==="mock" ? "read in test mode (canned, not Claude). Don't rely on this result." : "requirements analyzed by Claude; the rules made the decision.") : "not analyzed by Claude yet: rules only."} The full description is on the official site.</div>
+      <div class="note">Level: ${esc(LEVEL_NAME[job.level]||"")} (${esc(job.levelReason||"")}) · Category: ${esc(job.category||"")}</div>
+      ${job.url ? `<div><a href="${esc(job.url)}" target="_blank" rel="noopener">Apply on the official site ↗</a></div>` : ""}
+      ${canAnalyze ? `<div class="row"><button type="button" class="small primary" data-analyze="${esc(job.uid)}" ${left?"":"disabled"}>Analyze requirements with Claude</button><span class="note">${left} of ${REAL.analysis.cap} new analyses left today · about $0.001 · saved for everyone</span><span class="note analyze-msg"></span></div>` : ""}
+    </div>` : "";
+  el.innerHTML = `${realBox}
+    <div class="verdict ${v.cls}">
+      <div class="big">${v.name}</div>
+      ${recheck ? `<div>${esc(res.recheckReason)} No final result until the official posting is rechecked. The job and its Apply link stay available.</div>
+      <div class="box" style="margin-top:4px"><b>Provisional analysis, not a final result:</b> <span class="pill ${VERDICT[base].pill}">${VERDICT[base].name}</span> ${esc(text)}</div>` : `<div>${esc(text)}</div>`}
+      <div class="counts">
+        <span class="pill p-match">${cnt(req,"match")} match</span>
+        <span class="pill p-missing">${cnt(req,"missing")} missing</span>
+        <span class="pill p-confirm">${cnt(req,"confirm")} to check</span>
+        ${cnt(req,"info")?`<span class="pill p-info">${cnt(req,"info")} not checked</span>`:""}
+      </div>
+      <div class="row" style="margin-top:6px"><button type="button" class="small star" aria-pressed="${starred}" data-starbtn>${starred?"★ Starred":"☆ Star this job"}</button><span class="note">Required met: ${res.met} of ${res.total}${prov} · ${esc(job.source==="real" ? firstPubLabel(job) : postedLabel(job.postedDate))}</span></div>
+    </div>
+    ${res.ai ? `<details class="box"><summary class="note" style="cursor:pointer">What the AI read from this posting (${(res.ai.requirements||[]).length} items${res.rulesAdded?`; the rules added ${res.rulesAdded} more`:""})</summary><ul class="plan" style="font-size:13px">${(res.ai.requirements||[]).map(x=>`<li><span class="kind">${esc(x.kind)} · ${esc(String(x.category).replace(/_/g," "))}${x.grounded||!x.quote?"":" · quote not found"}</span><br>${esc(x.statement)}<br>${x.quote ? `<span class="quote" style="display:block;font:12px/1.4 var(--mono);color:var(--muted)">“${esc(x.quote)}”</span>` : ""}</li>`).join("")}</ul></details>` : ""}
+    ${work.length?`<h3 class="section-title">Work-forward path${prov} <span class="note">(${work.length} missing, ${work.length} step${work.length>1?"s":""})</span></h3><ol class="plan">${work.map(stepLi).join("")}</ol>`:""}
+    ${check.length?`<h3 class="section-title">Double-check${prov} <span class="note">(confirm these before you count yourself eligible)</span></h3><div class="box check"><ul class="plan" style="margin:0">${check.map(stepLi).join("")}</ul></div>`:""}
+    ${bonus.length?`<h3 class="section-title">Extra credit <span class="note">(preferred items you're missing)</span></h3><ul class="plan">${bonus.map(stepLi).join("")}</ul>`:""}
+    <h3 class="section-title">Required <span class="note">(${recheck ? "these will decide the result once the posting is rechecked" : "these decide the result"})</span></h3>
+    <div class="reqs">${req.length?req.map(row).join(""):'<p class="empty">No required lines found.</p>'}</div>
+    ${pref.length?`<h3 class="section-title">Preferred <span class="note">(nice to have; never changes the result)</span></h3><div class="reqs">${pref.map(row).join("")}</div>`:""}
+    <p class="note" style="margin-top:14px">How results work: each line of the posting is read as required or preferred, then checked against your profile. Only required lines decide the result. When a rule can't be sure, the line is marked "Check" and the result can't be Ready.</p>`;
+  el.querySelector("[data-starbtn]").onclick = ()=>toggleStar(job, res);
+  const ab = el.querySelector("[data-analyze]"); if (ab) ab.onclick = ()=>analyzeReal(ab.dataset.analyze, ab);
+  el.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>toggleStep(job, b.dataset));
+}
+
+/* Check a job I found */
+let pastedMeta = null; // date and link kept when a starred job is reopened
+function currentPastedJob(){
+  const posting = $("jobText").value;
+  const lines = posting.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  let title = (lines[0]||"Untitled job").slice(0,90), company = "";
+  const cm = posting.match(/^\s*(?:company|employer|organi[sz]ation)\s*:\s*(.+)$/im);
+  if (cm) company = cm[1].trim();
+  else { const tm = title.match(/^(.+?)\s+(?:at|@|—|–|-|\|)\s+(.+)$/); if (tm){ title = tm[1].trim(); company = tm[2].trim(); } }
+  const url = (posting.match(/https?:\/\/[^\s)]+/)||[""])[0];
+  const postedDate = postedFromText(posting) || (pastedMeta && pastedMeta.posting===posting ? pastedMeta.postedDate : null);
+  return {key:"p-"+hash(title+"|"+company+"|"+posting), title, company, url: url || (pastedMeta && pastedMeta.posting===posting ? pastedMeta.url : ""), posting, postedDate, source:"paste"};
+}
+function runCheck(scroll, readWithAINow){
+  const text = $("jobText").value.trim();
+  if (!text){ $("pasteMeta").textContent = ""; $("resultBody").innerHTML = '<p class="empty">Paste a job posting on the board, then select "Check my match".</p>'; return; }
+  const job = currentPastedJob(), P = getProfile();
+  let res = null, aiNote = "";
+  if (aiJobOn()){
+    const k = hash(text), c = aiJobCache.get(k);
+    if (!c && readWithAINow){
+      aiJobCache.set(k, {pending:true});
+      fetchJobAI(text).then(ai=>aiJobCache.set(k, {ai})).catch(e=>aiJobCache.set(k, {error:e.message})).finally(()=>runCheck(false));
+    }
+    const now = aiJobCache.get(k);
+    if (now && now.pending){ $("pasteMeta").textContent = "Reading the posting with AI…"; $("resultBody").innerHTML = '<p class="empty">Reading the posting with AI… this takes a few seconds.</p>'; return; }
+    if (now && now.ai){ res = evaluateWithAI(text, now.ai, P); job.ai = now.ai; if (!job.company && now.ai.company) job.company = now.ai.company; aiNote = AI.mock ? "Read with AI (test mode)" : "Read with AI"; }
+    else if (now && now.error) aiNote = `AI reading failed: ${now.error} Showing the rules-only result; select "Check my match" to try again.`;
+    else aiNote = 'Rules-only result. Select "Check my match" to read it with AI.';
+  }
+  res = res || evaluate(text, P);
+  $("pasteMeta").textContent = `Read as: ${job.title}${job.company?" · "+job.company:""} · ${postedLabel(job.postedDate)}${aiNote?" · "+aiNote:""}`;
+  render(res, job, $("resultBody"));
+  if (scroll && window.matchMedia("(max-width:900px)").matches) $("results").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+}
+
+/* Real Jobs (official employer boards via Greenhouse and Ashby; cached on the server, refreshed by hand) */
+let jobMode = "demo";
+const REAL = {loaded:false, sources:[], jobs:[], analysis:{today:0, cap:20}, message:"Loading real jobs…"};
+const PROVIDER_NAME = {greenhouse:"Greenhouse Job Board API", ashby:"Ashby Job Postings API"};
+function fmtChecked(iso){ if (!iso) return "never"; const d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString([], {year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}); }
+function realJob(r){
+  return {key:"rj:"+r.uid, uid:r.uid, sourceId:r.source_id, provider:r.provider, title:r.title, company:r.employer, url:r.apply_url, jobUrl:r.job_url,
+          posting:r.rule_text||"", postedDate:(r.first_published||"").slice(0,10)||null, location:r.location, secondary:r.secondary_locations||[],
+          workplace:r.workplace||"unknown", regions:r.regions||[], level:r.level||"unknown", levelReason:r.level_reason||"",
+          category:r.category||"Other", categoryReason:r.category_reason||"", department:r.department||"", source:"real",
+          ai:r.parsed||null, lastChecked:r.last_checked, firstPublished:r.first_published||null, lastPublished:r.last_published||null,
+          ageDays:(typeof r.age_days==="number" ? r.age_days : null), recheck:r.recheck||null, recheckReason:r.recheck_reason||""};
+}
+function fmtDay(iso){ const d = new Date(iso); return isNaN(d) ? "" : d.toLocaleDateString([], {year:"numeric", month:"short", day:"numeric"}); }
+// First-published date for real jobs; never invented. Separate from the last-checked (fetch) time.
+function firstPubLabel(job){
+  const day = job.firstPublished ? fmtDay(job.firstPublished) : "";
+  if (!day && job.lastPublished) return `Original publication date not provided by this source (last published ${fmtDay(job.lastPublished)})`;
+  if (!day) return "First published date unknown";
+  return job.ageDays==null ? `First published ${day}` : `First published ${day} · ${job.ageDays} day${job.ageDays===1?"":"s"} ago`;
+}
+// 45-day policy (Real Jobs only): keep the analysis as provisional and show "Needs recheck" instead of a final result.
+// The server decides `recheck` from first_published; a future official-source verification can clear it there.
+function realResult(job, P){
+  const res = evaluateReal(job, P);
+  if (!job.recheck) return res;
+  const reason = job.recheckReason || (job.recheck==="unknown" ? "The first-published date is unknown, so we can't tell whether this posting is recent." : "This posting needs a recheck.");
+  return Object.assign({}, res, {verdict:"recheck", provisional:res.verdict, recheckReason:reason});
+}
+// Rules decide. If the requirements can't be verified, add a "Check" item so the result can never be Ready.
+function evaluateReal(job, P){
+  let res;
+  if (job.ai) res = job.posting ? evaluateWithAI(job.posting, job.ai, P) : (()=>{ const a = evaluate(aiPostingText(job.ai), P); a.results.forEach(r=>r.via="ai"); a.ai = job.ai; return a; })();
+  else res = evaluate(job.posting || "", P);
+  const verify = [];
+  if (!job.ai && job.posting) verify.push("Not analyzed by Claude yet: the rules read only the posting's qualification section. Read the official posting to confirm nothing else is required.");
+  if (!job.ai && !job.posting) verify.push(PUBLIC_SITE
+    ? "No requirement summary for this job yet. Read the official posting (Apply link) to see what's required."
+    : "Not analyzed by Claude yet, and no qualification section was found. Read the official posting to see what's required.");
+  if (job.ai && !job.posting) verify.push(PUBLIC_SITE
+    ? `These requirements are CareerPath's summary of the official posting${job.ai.omitted ? ` (${job.ai.omitted} line(s) not shown here)` : ""}; the original text isn't shown on this site, so they can't be double-checked here. Read the official posting to confirm.`
+    : "Claude read this posting, but its qualification section couldn't be double-checked by the rules. Read the official posting to confirm.");
+  if (job.ai && job.ai.model==="mock") verify.push("Test-mode reading (canned, not Claude). Don't rely on this result.");
+  if (!verify.length) return res;
+  const extra = verify.map(t=>Object.assign(mk("confirm","Verify on the official posting", t, "Open the official posting with the Apply link and check the requirements yourself.", {kind:"verify"}), {pref:false, quote:"Requirements not fully verified"}));
+  const out = summarize(res.results.concat(extra)); out.ai = res.ai; out.rulesAdded = res.rulesAdded;
+  return out;
+}
+const LEVEL_NAME = {intern:"Internship", entry:"Entry-level", experienced:"Experienced", unknown:"Level not stated"};
+const WORKPLACE_NAME = {remote:"Remote", hybrid:"Hybrid", onsite:"On-site", unknown:"Work style not stated"};
+let realShown = 20, realForce = null;
+const jobSkillCache = new Map();
+function jobSkills(job){
+  if (!jobSkillCache.has(job.uid)){ const hay = job.title + "\n" + (job.posting || (job.ai ? (job.ai.requirements||[]).map(x=>x.statement).join("\n") : "")); jobSkillCache.set(job.uid, SKILLS.filter(([n,re])=>re.test(hay)).map(([n])=>n)); }
+  return jobSkillCache.get(job.uid);
+}
+// Hard filters from the user's explicit preferences (US-only preferences exclude incompatible jobs).
+function workStyleOK(job, P){
+  if (P.workStyle==="remote") return job.workplace==="remote";
+  if (P.workStyle==="hybrid") return job.workplace==="remote" || job.workplace==="hybrid";
+  return true;
+}
+function locationOK(job, P){
+  const prefs = P.prefLocations || [];
+  if (!prefs.length || prefs.includes("anywhere")) return true;
+  const locs = norm([job.location, ...job.secondary].join(" | ")), rg = job.regions, remote = job.workplace==="remote";
+  return prefs.some(p=>{
+    if (p==="anywhere in the us") return rg.includes("US") || (remote && rg.includes("Global"));
+    if (p==="remote (us)") return remote && (rg.includes("US") || rg.includes("Global"));
+    if (p==="remote (anywhere)") return remote;
+    if (p==="europe") return rg.includes("Europe");
+    if (p==="canada") return rg.includes("Canada");
+    const city = p.split(",")[0].trim();
+    if (city && locs.includes(city)) return true;
+    return remote && /,\s*[a-z]{2}$/.test(p) && (rg.includes("US") || rg.includes("Global"));   // a US city also fits US-remote jobs
+  });
+}
+function levelOK(job, P){
+  const w = P.levelWanted || "any";
+  if (w==="any") return true;
+  if (job.level==="unknown") return w!=="intern";          // level not stated: kept (ranked lower) unless internships only
+  return job.level===w;
+}
+function locFilterOK(job, f){ return ["remote","hybrid","onsite"].includes(f) ? job.workplace===f : job.regions.includes(f); }
+// Relevance ranking (0-100). Separate from eligibility: the verdict is never part of the score.
+function relevance(job, P, res){
+  const ints = P.interests || [];
+  const cat = norm(job.category), title = norm(job.title);
+  const it = !ints.length ? 0.5 : ints.some(i=>i===cat) ? 1 : ints.some(i=>i.split(/[\s&,]+/).filter(w=>w.length>3).some(w=>title.includes(w))) ? 0.6 : 0;
+  const js = jobSkills(job), mine = Object.keys(P.skills||{});
+  const sk = js.length ? js.filter(n=>mine.includes(n)).length / js.length : 0.4;
+  const w = P.levelWanted || "any";
+  const lv = w==="any" ? 0.6 : job.level===w ? 1 : job.level==="unknown" ? 0.5 : 0;
+  const rq = res ? (res.total ? res.met / res.total : 0.5) : 0.5;
+  return Math.round((it*0.30 + sk*0.35 + lv*0.15 + 0.10 + rq*0.10) * 100);
+}
+async function analyzeReal(uid, btn){
+  const msgEl = btn.parentElement.querySelector(".analyze-msg");
+  btn.disabled = true; btn.textContent = "Analyzing with Claude…";
+  try{
+    const r = await fetch("/api/real-jobs/analyze", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({uid})});
+    const b = await r.json().catch(()=>({}));
+    if (!r.ok || !b.job) throw new Error(b.error || "The analysis didn't finish.");
+    const i = REAL.jobs.findIndex(x=>x.uid===uid); if (i>=0) REAL.jobs[i] = b.job;
+    if (b.analysis) REAL.analysis = b.analysis;
+    toast(b.new_analysis ? "Requirements analyzed by Claude" : "Already analyzed: reused the saved reading");
+    renderFind(); renderPlan();
+  } catch(e){ btn.disabled = false; btn.textContent = "Analyze requirements with Claude"; if (msgEl) msgEl.textContent = e.message; }
+}
+async function loadRealJobs(){
+  if (PUBLIC_SITE) return loadPublicJobs();
+  if (!/^https?:$/.test(location.protocol)){ REAL.loaded = true; REAL.message = "Real jobs need the CareerPath server. Start it on the VM and open http://127.0.0.1:8000."; renderFind(); return; }
+  try{
+    const r = await fetch("/api/real-jobs", {cache:"no-store"}); const b = await r.json();
+    Object.assign(REAL, b, {loaded:true, error:""});
+    if (!REAL.jobs.length) REAL.message = b.message || "No real jobs cached yet.";
+    OPTS.realEmployer = [["","All employers"], ...(REAL.sources||[]).map(x=>[x.employer, `${x.employer} (${x.count})`])];
+    fillSelect($("realEmployer"), OPTS.realEmployer, true);
+  } catch(e){ REAL.loaded = true; REAL.message = "Couldn't load real jobs from the CareerPath server."; }
+  if (jobMode==="real") setJobMode("real"); else renderFind();
+  renderPlan();
+}
+// Public site: a sanitized snapshot exported from the team VM (export_public_jobs.py). No descriptions, no quotes.
+function freshness(firstPublished, provider, now){
+  // Same policy as the VM (careerpath/greenhouse.py recheck_status), recomputed in the browser so it stays correct as the file ages.
+  now = now || new Date();
+  const fp = firstPublished ? new Date(firstPublished) : null;
+  if (!fp || isNaN(fp) || fp - now > 12*3600e3)
+    return {age_days:null, recheck:"unknown", recheck_reason: provider==="ashby"
+      ? "This source doesn't provide the original publication date (only when the posting was last published), so freshness can't be confirmed."
+      : "The first-published date is unknown, so we can't tell whether this posting is recent."};
+  const ms = now - fp, age = Math.max(0, Math.floor(ms/864e5));
+  return ms > STALE_DAYS*864e5 ? {age_days:age, recheck:"stale", recheck_reason:`First published ${age} days ago, more than ${STALE_DAYS} days.`} : {age_days:age, recheck:null, recheck_reason:""};
+}
+function publicToReal(j, now){
+  const rq = j.requirements;
+  const parsed = rq ? {title:"", company:"", posted:"", location: rq.location || {}, model: rq.model, parsed_at: rq.analyzed_at, omitted: rq.omitted||0, summary:true,
+                       requirements: (rq.items||[]).map(x=>({kind:x.kind, category:x.category, statement:x.statement, quote:"", grounded: x.grounded!==false, unsure:!!x.unsure}))} : null;
+  return Object.assign({}, j, {source_id:j.provider, rule_text:"", parsed}, freshness(j.first_published, j.provider, now));
+}
+async function loadPublicJobs(){
+  try{
+    const r = await fetch("real-jobs.json", {cache:"no-store"});
+    if (!r.ok) throw new Error();
+    const b = await r.json(), now = new Date();
+    Object.assign(REAL, {loaded:true, error:"", sources:b.sources||[], generated:b.generated_at, jobs:(b.jobs||[]).map(j=>publicToReal(j, now)), analysis:{today:0, cap:0}});
+    REAL.message = REAL.jobs.length ? "" : "No real jobs in this snapshot yet.";
+    OPTS.realEmployer = [["","All employers"], ...REAL.sources.filter(x=>x.count).map(x=>[x.employer, `${x.employer} (${x.count})`])];
+    fillSelect($("realEmployer"), OPTS.realEmployer, true);
+  } catch(e){ REAL.loaded = true; REAL.jobs = []; REAL.message = "The real-jobs list (real-jobs.json) couldn't be loaded. Demo jobs still work."; }
+  if (jobMode==="real") setJobMode("real"); else renderFind();
+  renderPlan();
+}
+function setJobMode(m){
+  jobMode = m; findSel = null;
+  $("mode-demo").setAttribute("aria-pressed", String(m==="demo")); $("mode-real").setAttribute("aria-pressed", String(m==="real"));
+  $("realFilters").hidden = m!=="real"; $("realSummary").hidden = m!=="real"; $("demoOrderNote").hidden = m==="real"; realShown = 20;
+  const srcs = (REAL.sources||[]).filter(x=>x.count);
+  $("findSourceNote").innerHTML = m==="demo"
+    ? '<span class="example">Example jobs</span> These are fictional postings for the demo.'
+    : PUBLIC_SITE ? `<b>Real Jobs</b>: a snapshot of ${REAL.jobs.length} publicly listed jobs from ${srcs.length} employers' official careers boards (${esc(srcs.map(x=>x.employer).join(", "))}), exported ${esc(fmtChecked(REAL.generated))}. Requirement summaries are CareerPath's own short restatements, not the employer's text, so eligibility here is never "Ready": always read the official posting (Apply link). Ordered by relevance to your interests, skills, level and location; eligibility is shown separately.${(Date.now()-new Date(REAL.generated))>7*864e5 ? " <b>This list is more than a week old; some jobs may have closed.</b>" : ""}`
+    : `<b>Real Jobs</b> from ${srcs.length} employers' official careers boards (${esc([...new Set(srcs.map(x=>x.provider))].map(x=>PROVIDER_NAME[x]||x).join(", "))}). For Real Jobs, the order is by relevance to your interests, skills, level and location; eligibility is shown separately. Full descriptions stay on the official sites; use each Apply link.`;
+  renderFind();
+}
+
+/* Find jobs for me */
+let findSel = null;
+function libJob(j){ return {key:"lib-"+j.id, libId:j.id, title:j.title, company:j.company, url:"", posting:j.text, postedDate:j.postedDate, location:j.location, category:j.category, source:"lib"}; }
+function fitScore(res, P, job){
+  const skills = res.results.filter(r=>r.kind==="skill");
+  const sk = skills.length ? skills.filter(r=>r.status==="match").length/skills.length : 0.5;
+  const ints = P.interests||[];
+  const words = norm(job.title+" "+job.category);
+  const it = ints.length ? (ints.some(i=>norm(i)===norm(job.category) || i.split(/[\s&,]+/).filter(w=>w.length>3).some(w=>words.includes(w))) ? 1 : 0) : 0.5;
+  const pref = res.results.filter(r=>r.pref && r.status!=="info");
+  const pr = pref.length ? pref.filter(r=>r.status==="match").length/pref.length : 0.5;
+  return Math.round((sk*0.5 + it*0.3 + pr*0.2)*100);
+}
+function renderFind(){
+  if (jobMode==="real") return renderRealFind();
+  $("showMore").hidden = true;
+  const P = getProfile();
+  const filter = getV("findFilter") || "all", area = getV("findInterest");
+  const list = jobMode==="real"
+    ? REAL.jobs.map(r=>{ const job = realJob(r); return {j:{id:job.key, title:job.title, company:job.company, location:job.location, category:job.category}, job}; })
+    : LIBRARY.map(j=>({j, job:libJob(j)}));
+  let rows = list.map(({j, job})=>{ const res = job.source==="real" ? realResult(job, P) : evaluate(j.text, P); return {j, job, res, fit:fitScore(res, P, job)}; });
+  rows.sort((a,b)=>VRANK[a.res.verdict]-VRANK[b.res.verdict] || b.fit-a.fit);
+  const shown = rows.filter(x=>(filter==="all"||!["ready","needs","toward","recheck","cant"].includes(filter)||x.res.verdict===filter) && (!area || norm(x.j.category)===norm(area) || norm(x.j.title).includes(norm(area))));
+  if (!shown.find(x=>x.j.id===findSel) && shown.length) findSel = shown[0].j.id;
+  $("jobList").innerHTML = shown.length ? shown.map(x=>{
+    const v = VERDICT[x.res.verdict], age = ageDays(x.job.postedDate), on = !!store.items.find(i=>i.id==="job-"+x.job.key);
+    return `<div class="job${x.j.id===findSel?" sel":""}">
+      <div><div class="t">${esc(x.j.title)}</div><div class="meta">${esc(x.j.company)} · ${esc(x.j.location)} · ${esc(x.job.source==="real" ? firstPubLabel(x.job) : postedLabel(x.job.postedDate))}</div>${x.job.source==="real" ? `<div class="meta">Source: ${esc(x.j.company)} careers board via Greenhouse · last checked ${esc(fmtChecked(x.job.lastChecked))} · ${x.job.url?`<a href="${esc(x.job.url)}" target="_blank" rel="noopener">Apply on the official site ↗</a>`:""}</div>` : ""}</div>
+      <div class="acts"><button type="button" class="star" aria-pressed="${on}" aria-label="${on?"Unstar":"Star"} ${esc(x.j.title)}" data-star="${x.j.id}">${on?"★":"☆"}</button><button type="button" class="small" data-view="${x.j.id}">View match</button></div>
+      <div class="tags">${x.job.source==="real" ? `<span class="pill p-info">Real job</span><span class="pill ${x.job.ai && x.job.ai.model!=="mock" ? "p-match" : "p-confirm"}">${x.job.ai ? (x.job.ai.model==="mock" ? "Test-mode reading" : "Analyzed by Claude") : "Rules only"}</span>` : ""}<span class="pill ${v.pill}">${v.name}</span>${x.res.verdict==="recheck" ? `<span class="note">Provisional: ${esc(VERDICT[x.res.provisional].name)}</span>` : ""}<span class="note">${x.res.met} of ${x.res.total} required met · Fit ${x.fit}%</span>${x.job.source!=="real" && age!=null&&age>STALE_DAYS?'<span class="pill p-confirm">Check it\'s still open</span>':""}</div>
+    </div>`; }).join("") : `<p class="empty">${jobMode==="real" && !REAL.jobs.length ? esc(REAL.message) : "No jobs match this filter."}</p>`;
+  $("jobList").querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{ findSel = b.dataset.view; renderFind(); if (matchMedia("(max-width:900px)").matches) $("findResults").scrollIntoView(); });
+  $("jobList").querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{ const x = rows.find(r=>r.j.id===b.dataset.star); toggleStar(x.job, x.res); });
+  const sel = rows.find(x=>x.j.id===findSel);
+  if (sel && shown.includes(sel)){ $("findTitle").textContent = sel.j.title; render(sel.res, sel.job, $("findResult")); }
+  else { $("findTitle").textContent = ""; $("findResult").innerHTML = '<p class="empty">Choose a job above to see your match.</p>'; }
+}
+
+function renderRealFind(){
+  const P = getProfile();
+  const filter = getV("findFilter") || "all", area = getV("findInterest"), emp = getV("realEmployer"), loc = getV("realLocation");
+  const all = REAL.jobs.map(realJob);
+  let byPrefs = 0;
+  const cands = [];
+  for (const job of all){
+    const forced = job.uid===realForce;
+    if (!forced && !(workStyleOK(job,P) && locationOK(job,P) && levelOK(job,P))){ byPrefs++; continue; }
+    if (!forced && emp && norm(job.company)!==norm(emp)) continue;
+    if (!forced && loc && !locFilterOK(job, loc)) continue;
+    if (!forced && area && norm(job.category)!==norm(area)) continue;   // Real Jobs: exact category
+    cands.push({job, pre: relevance(job, P, null)});
+  }
+  cands.sort((a,b)=>b.pre-a.pre);
+  let pool = cands.slice(0, 150);
+  const f = cands.find(c=>c.job.uid===realForce); if (f && !pool.includes(f)) pool.push(f);
+  let rows = pool.map(c=>{ const res = realResult(c.job, P); return {j:{id:c.job.key, title:c.job.title}, job:c.job, res, score: relevance(c.job, P, res)}; });
+  rows.sort((a,b)=>b.score-a.score || a.job.company.localeCompare(b.job.company) || a.job.title.localeCompare(b.job.title));
+  const shortlist = rows.filter(x=>filter==="all" || !(filter in VRANK) || x.res.verdict===filter || x.job.uid===realForce).slice(0, 100);
+  const shown = shortlist.slice(0, Math.max(realShown, shortlist.findIndex(x=>x.job.uid===realForce)+1));
+  if (!shown.find(x=>x.j.id===findSel) && shown.length) findSel = shown[0].j.id;
+  $("realSummary").textContent = REAL.jobs.length
+    ? `${REAL.jobs.length} real jobs ${PUBLIC_SITE ? "in this snapshot" : "cached"}. ${byPrefs} don't fit your level, work style or locations. Showing the top ${shown.length} of ${shortlist.length} matches (best first, up to 100).`
+    : "";
+  $("showMore").hidden = shown.length >= shortlist.length;
+  $("jobList").innerHTML = shown.length ? shown.map(x=>{
+    const v = VERDICT[x.res.verdict], job = x.job, on = !!store.items.find(i=>i.id==="job-"+job.key);
+    const analysed = PUBLIC_SITE ? (job.ai ? "CareerPath summary" : "No summary yet") : job.ai ? (job.ai.model==="mock" ? "Test-mode reading" : "Analyzed by Claude") : "Rules only";
+    return `<div class="job${x.j.id===findSel?" sel":""}">
+      <div><div class="t">${esc(job.title)}</div>
+        <div class="meta"><b>${esc(job.company)}</b> · ${esc(job.location||"Location not stated")} · ${esc(WORKPLACE_NAME[job.workplace])} · <span title="${esc(job.levelReason)}">${esc(LEVEL_NAME[job.level])}</span> · ${esc(job.category)}</div>
+        <div class="meta">Availability: listed on the official board · last checked ${esc(fmtChecked(job.lastChecked))} · ${job.url?`<a href="${esc(job.url)}" target="_blank" rel="noopener">Apply on the official site ↗</a>`:""}</div>
+        <div class="meta">Freshness: ${esc(firstPubLabel(job))}</div></div>
+      <div class="acts"><button type="button" class="star" aria-pressed="${on}" aria-label="${on?"Unstar":"Star"} ${esc(job.title)}" data-star="${esc(x.j.id)}">${on?"★":"☆"}</button><button type="button" class="small" data-view="${esc(x.j.id)}">View match</button></div>
+      <div class="tags"><span class="pill p-info">Real job</span><span class="pill ${job.ai && job.ai.model!=="mock" ? "p-match" : "p-confirm"}">${analysed}</span><span class="note">Eligibility:</span><span class="pill ${v.pill}">${v.name}</span>${x.res.verdict==="recheck" ? `<span class="note">Provisional: ${esc(VERDICT[x.res.provisional].name)}</span>` : ""}<span class="note">${x.res.met} of ${x.res.total} required met · Relevance ${x.score}%</span></div>
+    </div>`; }).join("") : `<p class="empty">${!REAL.jobs.length ? esc(REAL.message) : "No real jobs match your preferences and filters. Try widening your locations, work style or level."}</p>`;
+  $("jobList").querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{ findSel = b.dataset.view; renderFind(); if (matchMedia("(max-width:900px)").matches) $("findResults").scrollIntoView(); });
+  $("jobList").querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{ const x = rows.find(r=>r.j.id===b.dataset.star); toggleStar(x.job, x.res); });
+  const sel = rows.find(x=>x.j.id===findSel);
+  if (sel && shown.includes(sel)){ $("findTitle").textContent = sel.job.title; render(sel.res, sel.job, $("findResult")); }
+  else { $("findTitle").textContent = ""; $("findResult").innerHTML = '<p class="empty">Choose a job above to see your match.</p>'; }
+}
+
+/* My plan */
+function renderPlan(){
+  const jobs = store.items.filter(i=>i.type!=="step").sort((a,b)=>(b.savedAt||"").localeCompare(a.savedAt||""));
+  const steps = store.items.filter(i=>i.type==="step");
+  $("planCount").textContent = jobs.length + steps.filter(s=>!s.done).length;
+  const P = getProfile();
+  const body = $("savedBody");
+  body.innerHTML = jobs.length ? jobs.map(j=>{
+    let rj = null;
+    if (j.source==="real"){
+      const uid = j.uid || (j.realId ? "greenhouse:recidiviz:"+j.realId : null);    // Step 4 stars used the Greenhouse id
+      const cur = REAL.jobs.find(r=>r.uid===uid);
+      rj = cur ? realJob(cur) : Object.assign({}, j, {ageDays:null, recheck:"unlisted",
+        recheckReason: REAL.loaded ? "This job isn't in the latest fetch of the official board. Check the official link." : "Loading the latest real-job list…"});
+    }
+    const res = rj ? realResult(rj, P) : j.posting ? (j.ai ? evaluateWithAI(j.posting, j.ai, P) : evaluate(j.posting, P)) : {verdict:j.verdict, met:j.met, total:j.total};
+    const v = VERDICT[res.verdict]||VERDICT.cant, age = ageDays(j.postedDate);
+    const title = j.url && /^https?:\/\//.test(j.url) ? `<a href="${esc(j.url)}" target="_blank" rel="noopener">${esc(j.title||"Untitled job")}</a>` : esc(j.title||"Untitled job");
+    const posted = rj ? `${esc(firstPubLabel(rj))}${rj.recheck ? ' <span class="pill p-recheck">Needs recheck</span>' : ""}` : age==null ? '<span class="pill p-confirm">Date unknown: check it\'s open</span>' : age>STALE_DAYS ? `<span class="pill p-confirm">${age} days ago: check it's open</span>` : `${age} day${age===1?"":"s"} ago`;
+    return `<tr><td>${title}</td><td>${esc(j.company||"")}</td><td><span class="pill ${v.pill}">${v.name}</span></td><td class="num">${res.met} of ${res.total}</td><td>${posted}</td><td class="num">${esc((j.savedAt||"").slice(0,10))}</td>
+      <td><div class="row" style="flex-wrap:nowrap"><button type="button" class="small" data-open="${esc(j.id)}">Open</button><button type="button" class="small ghost" data-del="${esc(j.id)}">Unstar</button></div></td></tr>`;
+  }).join("") : '<tr><td colspan="7" class="empty">No starred jobs yet. Select ☆ on a job in "Find jobs for me" or "Check a job I found".</td></tr>';
+  body.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openJob(b.dataset.open));
+  body.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>removeItem(b.dataset.del, "Unstarred"));
+  // steps grouped by job
+  const done = steps.filter(s=>s.done).length;
+  $("stepProgress").textContent = steps.length ? `${done} of ${steps.length} done` : "";
+  if (!steps.length){ $("stepList").innerHTML = '<p class="empty">No saved steps yet. Select "Save step" under a job\'s work-forward path or double-check list.</p>'; return; }
+  const groups = {};
+  steps.sort((a,b)=>(a.savedAt||"").localeCompare(b.savedAt||"")).forEach(s=>{ const gk = norm(s.jobTitle+"|"+(s.company||"")); (groups[gk] = groups[gk] || {title:s.jobTitle, company:s.company, items:[]}).items.push(s); });
+  $("stepList").innerHTML = Object.values(groups).map(g=>`<div class="steps-group"><h3>${esc(g.title)}${g.company?` <span class="note">· ${esc(g.company)}</span>`:""}</h3>
+    ${g.items.map(s=>`<div class="stepitem${s.done?" done":""}"><input type="checkbox" id="cb-${esc(s.id)}" data-done="${esc(s.id)}" ${s.done?"checked":""}>
+      <label for="cb-${esc(s.id)}" class="txt" style="font-weight:400;margin:0"><span class="kind note">${s.group==="work"?"Work-forward":s.group==="check"?"Double-check":"Extra credit"} · ${esc(s.what)}</span><br>${esc(s.text)}</label>
+      <button type="button" class="small ghost" data-rmstep="${esc(s.id)}" aria-label="Remove step">Remove</button></div>`).join("")}</div>`).join("");
+  $("stepList").querySelectorAll("[data-done]").forEach(cb=>cb.onchange=()=>{ const s = store.items.find(i=>i.id===cb.dataset.done); if (s) putItem({...s, done:cb.checked}, cb.checked?"Step done":"Step reopened"); });
+  $("stepList").querySelectorAll("[data-rmstep]").forEach(b=>b.onclick=()=>removeItem(b.dataset.rmstep, "Step removed"));
+}
+
+function refreshViews(){ runCheck(false); renderFind(); renderPlan(); }
+
+/* ---------------- Tabs ---------------- */
+const TABS = ["find","check","plan"];
+function showTab(name, push){
+  if (!TABS.includes(name)) name = "find";
+  TABS.forEach(t=>{ $("tab-"+t).setAttribute("aria-selected", String(t===name)); });
+  $("panel-plan").hidden = name!=="plan";
+  $("panel-find").hidden = name!=="find";
+  $("panel-check").hidden = name!=="check";
+  if (push && location.hash !== "#"+name){ try{ history.replaceState(null, "", "#"+name); }catch(e){ location.hash = name; } }
+}
+
+/* ---------------- AI CV reading (through your own server function) ---------------- */
+function removeContacts(text){
+  const lines = text.split(/\r?\n/);
+  // a first line that is just a name (2–4 capitalised words, no digits) is removed
+  const i = lines.findIndex(l=>l.trim());
+  if (i>=0 && /^[A-Z][A-Za-z.'-]+(?:\s+[A-Z][A-Za-z.'-]+){1,3}$/.test(lines[i].trim()) && !/\b(resume|curriculum|vitae|cv)\b/i.test(lines[i])) lines[i] = "[name removed]";
+  return lines.join("\n")
+    .replace(/[\w.+-]+@[\w-]+\.[\w.-]+/g, "[email removed]")
+    .replace(/(\+?\d{1,2}[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}/g, "[phone removed]")
+    .replace(/https?:\/\/\S+|(?:www\.)?linkedin\.com\/\S+/gi, "[link removed]")
+    .replace(/^\s*\d{1,6}\s+[\w .'-]+\b(street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|court|ct|way|place|pl)\b\.?.*$/gim, "[address removed]");
+}
+function aiOn(){ return AI.ready && $("useAI").checked; }
+async function readWithAI(text){
+  const ctrl = new AbortController(); const t = setTimeout(()=>ctrl.abort(), 45000);
+  try{
+    const res = await apiPost(CV_READER_URL, JSON.stringify({cvText: removeContacts(text)}), ctrl.signal);
+    const body = await res.json().catch(()=>({}));
+    if (!res.ok || !body.profile) throw new Error(body.error || "The AI reader didn't answer.");
+    return body.profile;
+  } finally { clearTimeout(t); }
+}
+const AI_LEVEL = {associate:1, bachelor:2, master:3, phd:4};
+const AI_AUTH = {citizen:"citizen", permanent_resident:"pr", needs_sponsorship:"needs", not_stated:"unsure"};
+function fromAI(a){
+  const p = {degrees:[], gradYear:"", ftYears:0, internMonths:0, expTypes:[], skills:{}, certs:[], location:"", auth:"unsure", languages:[]};
+  const ev = [];
+  (a.degrees||[]).forEach(d=>{
+    const lvl = AI_LEVEL[d.level]||0; if (!lvl) return;
+    const f = d.field ? (fieldsIn(d.field)[0] || norm(d.field)) : "";
+    p.degrees.push({level:lvl, fields: f ? [f] : []});
+    if (d.year && (!p.gradYear || d.year > +p.gradYear)) p.gradYear = String(d.year);
+    ev.push(["Degree", `${cap(d.level)}${d.field?" in "+d.field:""}${d.status==="expected"?" (expected)":""}`, d.evidence]);
+  });
+  p.degrees.sort((x,y)=>y.level-x.level);
+  let ft = 0, intern = 0; const types = new Set();
+  (a.positions||[]).forEach(x=>{
+    const m = Math.max(0, +x.months||0);
+    if (x.kind==="full_time") ft += m;
+    else if (x.kind==="internship" || x.kind==="research_or_teaching_assistant") intern += m;
+    if (x.experience_type && x.kind!=="volunteer") types.add(norm(x.experience_type));
+    ev.push(["Experience", `${x.title}${x.organization?", "+x.organization:""} · ${String(x.kind).replace(/_/g," ")}${m?` · ${m} months`:""}`, x.evidence]);
+  });
+  p.ftYears = Math.round(ft/12*10)/10; p.internMonths = intern; p.expTypes = [...types];
+  (a.skills||[]).forEach(k=>{
+    const hit = SKILLS.find(([n,re])=>norm(n)===norm(k.name) || re.test(k.name));
+    const name = hit ? hit[0] : k.name.trim(); if (!name) return;
+    if (p.skills[name]!=="advanced") p.skills[name] = k.level==="advanced" ? "advanced" : "basic";
+    ev.push(["Skill", `${name} (${p.skills[name]})`, k.evidence]);
+  });
+  (a.certificates||[]).forEach(c=>{
+    const hit = CERTS.find(([n,re])=>re.test(c.name)); const name = hit ? hit[0] : c.name.trim();
+    if (name && !p.certs.includes(name)) p.certs.push(name);
+    ev.push(["Certificate", name, c.evidence]);
+  });
+  if (a.location && a.location.city) p.location = a.location.city + (a.location.state ? ", " + String(a.location.state).toUpperCase() : "");
+  p.auth = AI_AUTH[a.work_authorization] || "unsure";
+  p.languages = (a.languages||[]).map(String);
+  return {p, ev};
+}
+function showEvidence(ev){
+  const box = $("aiEvidence");
+  if (!ev || !ev.length){ box.hidden = true; return; }
+  $("aiEvidenceList").innerHTML = ev.map(([k,what,q])=>`<li><span class="kind">${esc(k)}</span> ${esc(what)}${q?`<br><span class="quote" style="display:block;font:12px/1.4 var(--mono);color:var(--muted)">“${esc(q)}”</span>`:""}</li>`).join("");
+  box.hidden = false;
+}
+// Reads a CV with AI when it's on, otherwise with the in-browser rules. Returns a message for the status line.
+async function readProfileFrom(text){
+  if (aiOn()){
+    $("cvStatus").className = "status"; $("cvStatus").textContent = "Reading your CV with AI… this takes a few seconds.";
+    try{
+      const {p, ev} = fromAI(await readWithAI(text));
+      setProfile(p); showEvidence(ev);
+      return "AI read your CV. Check each field below and fix anything wrong; open “What the AI read” to see the quotes it used.";
+    }catch(e){
+      setProfile(readCV(text)); showEvidence(null);
+      $("cvStatus").className = "status err";
+      return `${e.name==="AbortError" ? "The AI reader took too long." : e.message} We read it with the simpler in-browser rules instead. Check your profile below.`;
+    }
+  }
+  setProfile(readCV(text)); showEvidence(null);
+  return "Read in this browser. Check your profile below and fix anything we got wrong.";
+}
+
+/* ---------------- CV file upload ---------------- */
+async function readFile(file){
+  const st = $("cvStatus"); st.className="status"; st.textContent = `Reading ${file.name}…`;
+  try{
+    let text = "";
+    const name = file.name.toLowerCase();
+    if (name.endsWith(".pdf") || file.type==="application/pdf"){
+      if (!window.pdfjsLib) throw new Error("The PDF reader didn't load. Paste your CV text instead.");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      const pdf = await pdfjsLib.getDocument({data: new Uint8Array(await file.arrayBuffer())}).promise;
+      for (let i=1;i<=pdf.numPages;i++){
+        const page = await pdf.getPage(i); const tc = await page.getTextContent();
+        let line = ""; tc.items.forEach(it=>{ line += it.str; if (it.hasEOL){ text += line + "\n"; line = ""; } else if (it.str && !/\s$/.test(it.str)) line += " "; });
+        text += line + "\n";
+      }
+    } else if (name.endsWith(".docx")){
+      if (!window.mammoth) throw new Error("The Word reader didn't load. Paste your CV text instead.");
+      text = (await mammoth.extractRawText({arrayBuffer: await file.arrayBuffer()})).value;
+    } else if (name.endsWith(".doc")){
+      throw new Error("Old .doc files can't be read here. Save it as .docx or PDF, or paste the text.");
+    } else {
+      text = await file.text();
+    }
+    text = text.replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim();
+    if (text.length < 40) throw new Error("We found almost no text in that file. If it's a scanned image, paste your CV text instead.");
+    $("cvText").value = text; $("cvExample").hidden = true;
+    const msg = await readProfileFrom(text); onProfileChange();
+    st.textContent = `${file.name}: ${msg}`;
+    refreshViews();
+  }catch(e){ st.className="status err"; st.textContent = e.message || "We couldn't read that file. Paste your CV text instead."; $("cvRaw").open = true; }
+}
+
+/* ---------------- Starred jobs and saved steps (account storage if available, else this browser) ---------------- */
+const LS_JOBS = "careerpath.savedJobs.v1", LS_PROFILE = "careerpath.profile.v1";
+const store = {mode:"memory", items:[], col:null};
+function upgrade(i){ return i.type ? i : {...i, type:"job", key: i.key || i.id}; }
+function localItems(){ try{ return JSON.parse(lsGet(LS_JOBS)||"[]").map(upgrade); }catch(e){ return []; } }
+function storeNote(){
+  $("storeNote").textContent = store.mode==="account" ? "Saved to your account on this page" : store.mode==="local" ? "Saved in this browser only" : "Saving isn't available here; your plan lasts until you close the page";
+}
+function refreshCompanies(){}
+function afterStoreChange(){ refreshCompanies(); refreshViews(); }
+async function putItem(item, msg){
+  if (store.mode==="account"){
+    try{ await store.col.doc(item.id).set(item); if (msg) toast(msg); return; }
+    catch(e){ store.mode = "local"; store.items = localItems(); storeNote(); }
+  }
+  store.items = store.items.filter(i=>i.id!==item.id).concat(item);
+  if (store.mode!=="memory" && !lsSet(LS_JOBS, JSON.stringify(store.items))) { store.mode="memory"; storeNote(); }
+  afterStoreChange(); if (msg) toast(msg);
+}
+async function removeItem(id, msg){
+  if (store.mode==="account"){ try{ await store.col.doc(id).delete(); if (msg) toast(msg); return; }catch(e){ toast("Couldn't remove it. Try again."); return; } }
+  store.items = store.items.filter(i=>i.id!==id); lsSet(LS_JOBS, JSON.stringify(store.items)); afterStoreChange(); if (msg) toast(msg);
+}
+function toggleStar(job, res){
+  const id = "job-"+job.key;
+  if (store.items.find(i=>i.id===id)) return removeItem(id, "Removed from My plan");
+  putItem({id, type:"job", key:job.key, source:job.source, libId:job.libId||null, title:job.title, company:job.company, url:job.url||"", posting:job.posting, postedDate:job.postedDate||null, ai:job.ai||null, realId:job.realId||null, uid:job.uid||null, location:job.location||"", lastChecked:job.lastChecked||null, firstPublished:job.firstPublished||null, verdict:res.verdict, met:res.met, total:res.total, savedAt:new Date().toISOString()}, "Starred: saved to My plan");
+}
+function toggleStep(job, ds){
+  const id = ds.step;
+  if (store.items.find(i=>i.id===id)) return removeItem(id, "Step removed from My plan");
+  putItem({id, type:"step", group:ds.group, what:ds.what, text:ds.tip, jobKey:job.key, jobTitle:job.title, company:job.company, done:false, savedAt:new Date().toISOString()}, "Step saved to My plan");
+}
+function openJob(id){
+  const j = store.items.find(x=>x.id===id); if (!j) return;
+  if (j.source==="real"){
+    const uid = j.uid || (j.realId ? "greenhouse:recidiviz:"+j.realId : null);
+    showTab("find", true); setV("findFilter","all"); setV("findInterest",""); setV("realEmployer",""); setV("realLocation","");
+    realForce = REAL.jobs.find(r=>r.uid===uid) ? uid : null; setJobMode("real");
+    if (realForce){ findSel = "rj:"+uid; renderFind(); }
+    else toast("This job isn't in the current cached list; it may have closed. Check the official link.");
+    return;
+  }
+  if (j.source==="lib" && LIBRARY.find(l=>l.id===j.libId)){ findSel = j.libId; setV("findFilter","all"); setV("findInterest",""); showTab("find", true); renderFind(); return; }
+  $("jobText").value = j.posting||""; pastedMeta = {posting:j.posting||"", postedDate:j.postedDate||null, url:j.url||""};
+  if (j.ai) aiJobCache.set(hash((j.posting||"").trim()), {ai:j.ai});
+  $("jobExample").hidden = true; showTab("check", true); runCheck(true);
+  toast("Checked again against your current profile");
+}
+async function connectAccountStore(){
+  try{
+    if (!window.claude || typeof window.claude.use !== "function") return;
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    if (!db || !user) return;
+    const uid = await user.id(); if (!uid) return;
+    const col = db.collection("data/users/" + uid);
+    let first = true;
+    col.onSnapshot(snap=>{
+      store.mode = "account"; store.col = col;
+      store.items = snap.docs.filter(d=>d.exists).map(d=>upgrade({...d.data(), id:d.id}));
+      if (first){ first = false;
+        // carry over items saved in this browser before the account store was available
+        const local = localItems().filter(l=>!store.items.some(i=>i.id===l.id));
+        (async()=>{ for (const l of local){ try{ await col.doc(l.id).set(l); }catch(e){ break; } } if (local.length) lsDel(LS_JOBS); })();
+      }
+      storeNote(); afterStoreChange();
+    }, ()=>{ store.mode = "local"; store.items = localItems(); storeNote(); afterStoreChange(); });
+  }catch(e){ /* keep browser storage */ }
+}
+
+/* ---------------- Profile memory ---------------- */
+function onProfileChange(){
+  if ($("remember").checked){
+    lsSet(LS_PROFILE, JSON.stringify({form:formSnapshot(), multi}));
+  }
+  clearTimeout(onProfileChange._t); onProfileChange._t = setTimeout(refreshViews, 250);
+}
+function formSnapshot(){ const o={}; ["deg1Level","deg1Field","deg2Level","deg2Field","gradYear","ftYears","internMonths","city","state","auth","levelWanted","workStyle"].forEach(k=>o[k]=getV(k)); return o; }
+
+/* ---------------- Wire up ---------------- */
+function init(){
+  buildPickers();
+  const testOK = lsSet("careerpath.test","1"); lsDel("careerpath.test");
+  store.mode = testOK ? "local" : "memory"; store.items = testOK ? localItems() : [];
+  storeNote(); refreshCompanies(); connectAccountStore();
+
+  const saved = (()=>{ try{ return JSON.parse(lsGet(LS_PROFILE)||"null"); }catch(e){ return null; } })();
+  $("cvText").value = EXAMPLE_CV;
+  if (saved && saved.form){
+    Object.entries(saved.form).forEach(([k,v])=>{ if ($(k)) setV(k, v); });
+    if (saved.multi){ ["interests","prefLocations","expTypes","certs","languages"].forEach(k=>multi[k]=saved.multi[k]||[]); multi.skills = saved.multi.skills||{}; }
+    ["interests","prefLocations","expTypes","skills","certs","languages"].forEach(renderMulti); $("remember").checked = true; $("cvExample").hidden = true;
+    $("cvStatus").textContent = "Loaded your saved profile from this browser.";
+  } else {
+    setProfile(readCV(EXAMPLE_CV));
+    multi.interests = ["Data & analytics"]; renderMulti("interests");
+    $("cvStatus").textContent = "Showing an example CV. Upload yours to replace it.";
+  }
+  $("jobText").value = EXAMPLE_PASTE;
+  setV("findFilter","all"); setV("findInterest","");
+
+  TABS.forEach(t=>$("tab-"+t).onclick = ()=>showTab(t, true));
+  $("tab-find").parentElement.addEventListener("keydown", e=>{
+    if (!["ArrowLeft","ArrowRight"].includes(e.key)) return;
+    const cur = TABS.findIndex(t=>$("tab-"+t).getAttribute("aria-selected")==="true");
+    const nx = TABS[(cur + (e.key==="ArrowRight"?1:TABS.length-1)) % TABS.length]; showTab(nx, true); $("tab-"+nx).focus();
+  });
+  window.addEventListener("hashchange", ()=>showTab(location.hash.slice(1)));
+  showTab(location.hash.slice(1) || "find");
+  refreshViews();
+
+  $("cvFile").addEventListener("change", e=>{ const f = e.target.files[0]; if (f) readFile(f); });
+  const drop = $("drop");
+  ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", e=>{ const f = e.dataTransfer.files[0]; if (f) readFile(f); });
+  $("reread").onclick = async ()=>{ const b = $("reread"); b.disabled = true; $("cvExample").hidden = $("cvText").value!==EXAMPLE_CV; $("cvStatus").className="status"; const msg = await readProfileFrom($("cvText").value); $("cvStatus").textContent = msg; b.disabled = false; onProfileChange(); };
+  checkAI();
+  $("useAIJob").addEventListener("change", ()=>runCheck(false, true));
+  $("profile").addEventListener("pick", onProfileChange);
+  $("w-findFilter").addEventListener("pick", renderFind);
+  $("mode-demo").onclick = ()=>setJobMode("demo");
+  $("mode-real").onclick = ()=>{ realForce = null; setJobMode("real"); };
+  $("w-realEmployer").addEventListener("pick", ()=>{ realShown = 20; realForce = null; renderFind(); });
+  $("w-realLocation").addEventListener("pick", ()=>{ realShown = 20; realForce = null; renderFind(); });
+  $("showMore").onclick = ()=>{ realShown += 20; renderFind(); };
+  loadRealJobs();
+  $("w-findInterest").addEventListener("pick", renderFind);
+  $("remember").addEventListener("change", e=>{ if (e.target.checked){ onProfileChange(); toast("Profile will be remembered in this browser"); } else { lsDel(LS_PROFILE); toast("Profile no longer remembered"); } });
+  $("checkBtn").onclick = ()=>{ const k = hash($("jobText").value.trim()); const c = aiJobCache.get(k); if (c && c.error) aiJobCache.delete(k); runCheck(true, true); };
+  $("jobText").addEventListener("input", ()=>{ $("jobExample").hidden = true; });
+  $("jobText").addEventListener("paste", ()=>setTimeout(()=>runCheck(false, true), 0));
+  $("clearJob").onclick = ()=>{ $("jobText").value=""; pastedMeta = null; $("jobExample").hidden=true; runCheck(false); $("jobText").focus(); };
+}
+if (PUBLIC_SITE) $("publicNotice").hidden = false;
+init();
+</script>
+</body>
+</html>

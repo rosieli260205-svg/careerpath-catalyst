@@ -1,0 +1,1361 @@
+{
+ "format": "careerpath-public-jobs/1",
+ "generated_at": "2026-11-18T07:42:34Z",
+ "notice": "Job facts and links come from each employer's official careers board. Requirement summaries are CareerPath's own short restatements, not the employer's text. Always read the official posting before applying.",
+ "policy": {
+  "stale_days": 45,
+  "unknown_date": "needs_recheck"
+ },
+ "sources": [
+  {
+   "id": "recidiviz",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "careers_url": "https://job-boards.greenhouse.io/recidiviz",
+   "last_checked": "2026-11-18T06:23:54Z",
+   "count": 6
+  },
+  {
+   "id": "notion",
+   "employer": "Notion",
+   "provider": "ashby",
+   "careers_url": "https://jobs.ashbyhq.com/notion",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "count": 20
+  },
+  {
+   "id": "ramp",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "careers_url": "https://jobs.ashbyhq.com/ramp",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "count": 20
+  },
+  {
+   "id": "linear",
+   "employer": "Linear",
+   "provider": "ashby",
+   "careers_url": "https://jobs.ashbyhq.com/linear",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "count": 13
+  }
+ ],
+ "jobs": [
+  {
+   "uid": "greenhouse:recidiviz:4717510006",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "title": "Data Analyst (Entry-Level)",
+   "location": "Remote, New York City, or Oakland",
+   "secondary_locations": [
+    "New York City",
+    "Oakland",
+    "Remote"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Data & analytics",
+   "apply_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4717510006",
+   "job_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4717510006",
+   "first_published": "2026-09-30T12:31:29-04:00",
+   "last_published": null,
+   "last_checked": "2026-11-18T06:23:54Z",
+   "requirements": null
+  },
+  {
+   "uid": "greenhouse:recidiviz:4657637006",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "title": "Data Analyst",
+   "location": "Remote, New York City, or Oakland",
+   "secondary_locations": [
+    "New York City",
+    "Oakland",
+    "Remote"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Data & analytics",
+   "apply_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4657637006",
+   "job_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4657637006",
+   "first_published": "2026-02-24T19:34:58-05:00",
+   "last_published": null,
+   "last_checked": "2026-11-18T06:23:54Z",
+   "requirements": null
+  },
+  {
+   "uid": "greenhouse:recidiviz:4725427006",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "title": "Deployment Strategist",
+   "location": "Remote, NYC, Oakland",
+   "secondary_locations": [
+    "New York City",
+    "Oakland",
+    "Remote"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Customer success",
+   "apply_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4725427006",
+   "job_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4725427006",
+   "first_published": "2026-10-28T10:43:02-04:00",
+   "last_published": null,
+   "last_checked": "2026-11-18T06:23:54Z",
+   "requirements": null
+  },
+  {
+   "uid": "greenhouse:recidiviz:4713473006",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "title": "Impact Analytics Data Analyst",
+   "location": "Remote, New York City, or Oakland",
+   "secondary_locations": [
+    "New York City",
+    "Oakland",
+    "Remote"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Data & analytics",
+   "apply_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4713473006",
+   "job_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4713473006",
+   "first_published": "2026-10-26T14:51:40-04:00",
+   "last_published": null,
+   "last_checked": "2026-11-18T06:23:54Z",
+   "requirements": null
+  },
+  {
+   "uid": "greenhouse:recidiviz:4677327006",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "title": "Implementation Engineer",
+   "location": "Remote, NYC office, or Oakland office",
+   "secondary_locations": [
+    "New York City",
+    "Oakland",
+    "Remote"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Software engineering",
+   "apply_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4677327006",
+   "job_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4677327006",
+   "first_published": "2026-04-28T18:33:28-04:00",
+   "last_published": null,
+   "last_checked": "2026-11-18T06:23:54Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:ea6f01b1-dda2-4b0f-b351-d3e7c5e9c9e9",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Product Design Intern (Summer 2027)",
+   "location": "New York, New York",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Design",
+   "apply_url": "https://jobs.ashbyhq.com/notion/ea6f01b1-dda2-4b0f-b351-d3e7c5e9c9e9/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/ea6f01b1-dda2-4b0f-b351-d3e7c5e9c9e9",
+   "first_published": null,
+   "last_published": "2026-11-10T19:08:59.709+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:3fba1c39-c5cb-47d7-9ad2-1cec4d7e9d0c",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineer Intern (Summer 2027)",
+   "location": "San Francisco, California",
+   "secondary_locations": [
+    "New York, New York"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/3fba1c39-c5cb-47d7-9ad2-1cec4d7e9d0c/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/3fba1c39-c5cb-47d7-9ad2-1cec4d7e9d0c",
+   "first_published": null,
+   "last_published": "2026-08-14T19:07:13.459+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:2b587e66-deac-421a-a824-9415ba78b5a7",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineer Intern, Mobile (Winter 2027)",
+   "location": "San Francisco, California",
+   "secondary_locations": [
+    "New York, New York"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/2b587e66-deac-421a-a824-9415ba78b5a7/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/2b587e66-deac-421a-a824-9415ba78b5a7",
+   "first_published": null,
+   "last_published": "2026-09-24T19:58:11.492+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:43ffba97-b64a-4c6a-ac13-c803253c9413",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineering Intern, Frontend (Summer 2027)",
+   "location": "New York, New York",
+   "secondary_locations": [
+    "San Francisco, California"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/43ffba97-b64a-4c6a-ac13-c803253c9413/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/43ffba97-b64a-4c6a-ac13-c803253c9413",
+   "first_published": null,
+   "last_published": "2026-11-06T18:42:11.019+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:27090d0f-07d3-419b-adaa-837b5e22f947",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineering Intern, iOS (Summer 2027)",
+   "location": "New York, New York",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/27090d0f-07d3-419b-adaa-837b5e22f947/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/27090d0f-07d3-419b-adaa-837b5e22f947",
+   "first_published": null,
+   "last_published": "2026-11-06T18:41:27.009+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:b39ceb08-a0a7-4f8b-a760-2fb88e209956",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Applied Scientist Intern",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Data & analytics",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/b39ceb08-a0a7-4f8b-a760-2fb88e209956/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/b39ceb08-a0a7-4f8b-a760-2fb88e209956",
+   "first_published": null,
+   "last_published": "2026-09-15T01:44:04.643+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:b87e898f-8d8b-447d-b3d5-9073ccf7d109",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Risk Strategy Intern",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Legal & compliance",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/b87e898f-8d8b-447d-b3d5-9073ccf7d109/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/b87e898f-8d8b-447d-b3d5-9073ccf7d109",
+   "first_published": null,
+   "last_published": "2026-11-13T17:31:05.947+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:fcf118cc-521a-4a62-9d13-945e5b6e3cb8",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Software Engineering Intern, Android",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "onsite",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/fcf118cc-521a-4a62-9d13-945e5b6e3cb8/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/fcf118cc-521a-4a62-9d13-945e5b6e3cb8",
+   "first_published": null,
+   "last_published": "2026-09-24T00:55:33.807+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:acf6b28d-767f-483f-8ff2-114620cd7e04",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Software Engineering Intern, Backend",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "onsite",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/acf6b28d-767f-483f-8ff2-114620cd7e04/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/acf6b28d-767f-483f-8ff2-114620cd7e04",
+   "first_published": null,
+   "last_published": "2026-04-09T01:01:29.953+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:a13ae586-f4cb-4385-8822-c42b9b54ed74",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Software Engineering Intern, Frontend",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/a13ae586-f4cb-4385-8822-c42b9b54ed74/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/a13ae586-f4cb-4385-8822-c42b9b54ed74",
+   "first_published": null,
+   "last_published": "2026-09-24T00:40:15.975+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:b66be397-240b-41a6-9b05-493299b270a9",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Software Engineering Intern, iOS",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "intern",
+   "level_reason": "internship in the title or employment type",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/b66be397-240b-41a6-9b05-493299b270a9/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/b66be397-240b-41a6-9b05-493299b270a9",
+   "first_published": null,
+   "last_published": "2026-09-24T01:01:49.394+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:05e14247-17c4-4e98-9a13-53828a4e2f13",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Business Development Representative, New York",
+   "location": "New York, New York",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/notion/05e14247-17c4-4e98-9a13-53828a4e2f13/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/05e14247-17c4-4e98-9a13-53828a4e2f13",
+   "first_published": null,
+   "last_published": "2026-04-02T21:00:55.755+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:b21fef72-4864-4a3e-a627-91557a0f8a36",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Business Development Representative, San Francisco",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/notion/b21fef72-4864-4a3e-a627-91557a0f8a36/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/b21fef72-4864-4a3e-a627-91557a0f8a36",
+   "first_published": null,
+   "last_published": "2026-04-01T23:05:05.541+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:a1e9f265-7a8d-4acd-9503-3c36b6f7008b",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Commercial Solutions Consultant, New York",
+   "location": "New York, New York",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "asks for 1+ year(s)",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/notion/a1e9f265-7a8d-4acd-9503-3c36b6f7008b/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/a1e9f265-7a8d-4acd-9503-3c36b6f7008b",
+   "first_published": null,
+   "last_published": "2026-07-27T13:06:34.843+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:e12b83e9-18bd-4f5b-8bf8-16c78726559a",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Commercial Solutions Consultant, San Francisco",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "asks for 1+ year(s)",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/notion/e12b83e9-18bd-4f5b-8bf8-16c78726559a/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/e12b83e9-18bd-4f5b-8bf8-16c78726559a",
+   "first_published": null,
+   "last_published": "2026-07-27T13:10:21.071+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:85947779-6b87-466a-98bc-30a640448c28",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineer, Early Career (AI)",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/85947779-6b87-466a-98bc-30a640448c28/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/85947779-6b87-466a-98bc-30a640448c28",
+   "first_published": null,
+   "last_published": "2026-07-06T18:37:42.434+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:297b4ece-765f-4eea-b1b8-46057cb6501f",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineer, Growth (Early Career)",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/297b4ece-765f-4eea-b1b8-46057cb6501f/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/297b4ece-765f-4eea-b1b8-46057cb6501f",
+   "first_published": null,
+   "last_published": "2026-07-06T18:37:35.161+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:e32799d2-8ef8-4803-8189-c72514afa816",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Software Engineer, New Grad (Dec 2026)",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/e32799d2-8ef8-4803-8189-c72514afa816/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/e32799d2-8ef8-4803-8189-c72514afa816",
+   "first_published": null,
+   "last_published": "2026-08-14T19:12:39.557+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:606475af-b74f-42c4-978a-dde138a86ac7",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Associate, Strategic Finance",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Finance & accounting",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/606475af-b74f-42c4-978a-dde138a86ac7/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/606475af-b74f-42c4-978a-dde138a86ac7",
+   "first_published": null,
+   "last_published": "2026-05-29T18:37:46.619+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:d64609dd-c391-45a2-bfdb-c1bb34e8f93c",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Customer Experience Associate",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "Remote (US)",
+    "Denver, CO",
+    "Miami, FL"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/d64609dd-c391-45a2-bfdb-c1bb34e8f93c/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/d64609dd-c391-45a2-bfdb-c1bb34e8f93c",
+   "first_published": null,
+   "last_published": "2026-11-06T15:55:20.931+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:40f43993-21e8-4db1-a9f4-7a3e6098a9ba",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Customer Experience Associate (Evening Shift)",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA",
+    "Remote (US)",
+    "Denver, CO",
+    "Miami, FL"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/40f43993-21e8-4db1-a9f4-7a3e6098a9ba/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/40f43993-21e8-4db1-a9f4-7a3e6098a9ba",
+   "first_published": null,
+   "last_published": "2026-11-06T15:57:51.702+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:31bd9e9e-102f-4051-abc1-22cdd7d9617a",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Legal & Privacy Operations Associate",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Legal & compliance",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/31bd9e9e-102f-4051-abc1-22cdd7d9617a/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/31bd9e9e-102f-4051-abc1-22cdd7d9617a",
+   "first_published": null,
+   "last_published": "2026-11-09T20:49:25.353+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:fc971889-db1d-4a20-a25e-f282f9296936",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "University Grad | Customer Experience Associate",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA",
+    "Remote (US)"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "entry",
+   "level_reason": "title or department marks it as early-career",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/fc971889-db1d-4a20-a25e-f282f9296936/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/fc971889-db1d-4a20-a25e-f282f9296936",
+   "first_published": null,
+   "last_published": "2026-11-06T15:56:23.780+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:c21af93e-210f-4969-8eaa-90fb16a5b720",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Account Executive, Startups",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/linear/c21af93e-210f-4969-8eaa-90fb16a5b720/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/c21af93e-210f-4969-8eaa-90fb16a5b720",
+   "first_published": null,
+   "last_published": "2025-11-14T22:09:45.713+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:f272fc4a-91a7-4dcf-9cb5-3600ebaf14e1",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Analytics Engineer",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Data & analytics",
+   "apply_url": "https://jobs.ashbyhq.com/linear/f272fc4a-91a7-4dcf-9cb5-3600ebaf14e1/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/f272fc4a-91a7-4dcf-9cb5-3600ebaf14e1",
+   "first_published": null,
+   "last_published": "2026-08-11T00:36:47.459+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:1aa6f672-5917-49aa-b015-70ebff901923",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Deal Desk",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Operations & supply chain",
+   "apply_url": "https://jobs.ashbyhq.com/linear/1aa6f672-5917-49aa-b015-70ebff901923/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/1aa6f672-5917-49aa-b015-70ebff901923",
+   "first_published": null,
+   "last_published": "2026-08-10T22:08:32.546+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:1d652292-04d9-405c-8101-578efd020e94",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Developer Relations",
+   "location": "North America",
+   "secondary_locations": [
+    "Europe"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "Europe",
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/linear/1d652292-04d9-405c-8101-578efd020e94/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/1d652292-04d9-405c-8101-578efd020e94",
+   "first_published": null,
+   "last_published": "2026-04-24T03:30:24.628+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:4c4f5bf5-0628-4145-b211-eb533edab8d1",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Field Marketing Manager",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Marketing",
+   "apply_url": "https://jobs.ashbyhq.com/linear/4c4f5bf5-0628-4145-b211-eb533edab8d1/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/4c4f5bf5-0628-4145-b211-eb533edab8d1",
+   "first_published": null,
+   "last_published": "2026-10-21T22:06:41.911+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:eac7f181-d658-4943-9430-51bae2bcd110",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Mobile Product Designer",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Design",
+   "apply_url": "https://jobs.ashbyhq.com/linear/eac7f181-d658-4943-9430-51bae2bcd110/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/eac7f181-d658-4943-9430-51bae2bcd110",
+   "first_published": null,
+   "last_published": "2026-08-03T19:57:33.020+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:0c7c2e26-0a98-42cf-a47c-9a3999fb513b",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Product Engineer",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/linear/0c7c2e26-0a98-42cf-a47c-9a3999fb513b/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/0c7c2e26-0a98-42cf-a47c-9a3999fb513b",
+   "first_published": null,
+   "last_published": "2026-06-09T18:45:53.014+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:b7669c4b-eeca-421d-ba9a-d90203f6fcb2",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Product Manager",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Product",
+   "apply_url": "https://jobs.ashbyhq.com/linear/b7669c4b-eeca-421d-ba9a-d90203f6fcb2/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/b7669c4b-eeca-421d-ba9a-d90203f6fcb2",
+   "first_published": null,
+   "last_published": "2026-01-21T22:22:21.799+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:c0abc97e-b4d7-4ad7-bd13-bc40f4023227",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Product Marketing Manager",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Marketing",
+   "apply_url": "https://jobs.ashbyhq.com/linear/c0abc97e-b4d7-4ad7-bd13-bc40f4023227/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/c0abc97e-b4d7-4ad7-bd13-bc40f4023227",
+   "first_published": null,
+   "last_published": "2026-06-30T20:17:43.790+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:b4df9dbe-618e-4a3b-874c-c9abf87ca5c0",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Product Support Specialist, Eastern/Central Time",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/linear/b4df9dbe-618e-4a3b-874c-c9abf87ca5c0/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/b4df9dbe-618e-4a3b-874c-c9abf87ca5c0",
+   "first_published": null,
+   "last_published": "2026-11-03T22:24:20.315+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:d062065e-05bb-42ce-a430-ec205695cc2e",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Product Support Specialist, Pacific/Mountain Time",
+   "location": "North America",
+   "secondary_locations": [],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/linear/d062065e-05bb-42ce-a430-ec205695cc2e/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/d062065e-05bb-42ce-a430-ec205695cc2e",
+   "first_published": null,
+   "last_published": "2026-05-28T20:46:41.811+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:b32de590-06ce-47d4-8994-66b936df908d",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Production Designer",
+   "location": "North America",
+   "secondary_locations": [
+    "Europe"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "Europe",
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Design",
+   "apply_url": "https://jobs.ashbyhq.com/linear/b32de590-06ce-47d4-8994-66b936df908d/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/b32de590-06ce-47d4-8994-66b936df908d",
+   "first_published": null,
+   "last_published": "2026-08-06T19:59:03.067+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:11e56782-ee28-4025-ba0e-76222b0bfcea",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "AI Product Manager, Growth Marketing",
+   "location": "New York, New York",
+   "secondary_locations": [
+    "San Francisco, California"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Product",
+   "apply_url": "https://jobs.ashbyhq.com/notion/11e56782-ee28-4025-ba0e-76222b0bfcea/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/11e56782-ee28-4025-ba0e-76222b0bfcea",
+   "first_published": null,
+   "last_published": "2026-10-21T17:42:31.889+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:0d000633-4a69-4dae-ab5f-da19b5ab8cc0",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Business Operations & Strategy",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Operations & supply chain",
+   "apply_url": "https://jobs.ashbyhq.com/notion/0d000633-4a69-4dae-ab5f-da19b5ab8cc0/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/0d000633-4a69-4dae-ab5f-da19b5ab8cc0",
+   "first_published": null,
+   "last_published": "2026-09-16T16:41:53.317+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:30a5c739-185f-4a55-8a63-85974d687444",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Business Systems Engineer",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/30a5c739-185f-4a55-8a63-85974d687444/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/30a5c739-185f-4a55-8a63-85974d687444",
+   "first_published": null,
+   "last_published": "2026-10-29T17:57:50.050+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:a92eb06e-8ef3-4118-b496-94f3cdf8005d",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Commercial Counsel, Enterprise",
+   "location": "San Francisco, California",
+   "secondary_locations": [
+    "New York, New York"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Legal & compliance",
+   "apply_url": "https://jobs.ashbyhq.com/notion/a92eb06e-8ef3-4118-b496-94f3cdf8005d/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/a92eb06e-8ef3-4118-b496-94f3cdf8005d",
+   "first_published": null,
+   "last_published": "2026-09-01T20:42:55.037+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:45f60d0e-e44f-40c5-985e-4096a8966860",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Growth Engineer, Startups & SMBs",
+   "location": "New York, New York",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/notion/45f60d0e-e44f-40c5-985e-4096a8966860/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/45f60d0e-e44f-40c5-985e-4096a8966860",
+   "first_published": null,
+   "last_published": "2026-10-21T18:45:02.761+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:576401b9-66e7-4407-a9e2-8aafaa590082",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Lifecycle Marketing Manager, Campaign Strategy & Execution",
+   "location": "San Francisco, California",
+   "secondary_locations": [
+    "New York, New York"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Marketing",
+   "apply_url": "https://jobs.ashbyhq.com/notion/576401b9-66e7-4407-a9e2-8aafaa590082/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/576401b9-66e7-4407-a9e2-8aafaa590082",
+   "first_published": null,
+   "last_published": "2026-10-14T15:38:27.470+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:b741addb-c38b-4b62-9786-ea86a30953d2",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Market Researcher",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "unknown",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Research",
+   "apply_url": "https://jobs.ashbyhq.com/notion/b741addb-c38b-4b62-9786-ea86a30953d2/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/b741addb-c38b-4b62-9786-ea86a30953d2",
+   "first_published": null,
+   "last_published": "2026-11-17T19:57:50.189+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:notion:92de7ece-b7d9-4b2a-b9cb-b978cc690a46",
+   "employer": "Notion",
+   "provider": "ashby",
+   "title": "Payroll Analyst, AMER",
+   "location": "San Francisco, California",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Finance & accounting",
+   "apply_url": "https://jobs.ashbyhq.com/notion/92de7ece-b7d9-4b2a-b9cb-b978cc690a46/application",
+   "job_url": "https://jobs.ashbyhq.com/notion/92de7ece-b7d9-4b2a-b9cb-b978cc690a46",
+   "first_published": null,
+   "last_published": "2026-10-02T19:56:09.176+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:883fbb33-65a9-4ace-97ad-2a1f588020c2",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "AI Account Executive, Glass",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "London, UK",
+    "San Francisco, CA"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "Europe",
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/883fbb33-65a9-4ace-97ad-2a1f588020c2/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/883fbb33-65a9-4ace-97ad-2a1f588020c2",
+   "first_published": null,
+   "last_published": "2026-11-10T02:03:24.964+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:cc0af88a-2a19-493d-93cf-c5090f986f1f",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "AI Partnerships Manager",
+   "location": "San Francisco, CA",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/cc0af88a-2a19-493d-93cf-c5090f986f1f/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/cc0af88a-2a19-493d-93cf-c5090f986f1f",
+   "first_published": null,
+   "last_published": "2026-10-06T12:46:25.219+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:8efd3a0a-fc66-46e2-9415-bffba10e2919",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "AI Solutions Engineer",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA",
+    "Boston, MA",
+    "Chicago, IL",
+    "Denver, CO",
+    "Miami, FL"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Software engineering",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/8efd3a0a-fc66-46e2-9415-bffba10e2919/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/8efd3a0a-fc66-46e2-9415-bffba10e2919",
+   "first_published": null,
+   "last_published": "2026-08-27T03:05:26.969+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:cbdf2857-1675-4b68-8cb5-2f92a20faa75",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "AI Solutions Strategist",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Customer success",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/cbdf2857-1675-4b68-8cb5-2f92a20faa75/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/cbdf2857-1675-4b68-8cb5-2f92a20faa75",
+   "first_published": null,
+   "last_published": "2026-09-02T19:29:11.289+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:8c004352-f162-4d89-858f-75a649e77ec4",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Account Executive | Commercial",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/8c004352-f162-4d89-858f-75a649e77ec4/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/8c004352-f162-4d89-858f-75a649e77ec4",
+   "first_published": null,
+   "last_published": "2025-10-09T20:16:19.133+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:8f3c27f0-50fb-47ba-a3dd-597428380843",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Account Executive | Enterprise",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [
+    "San Francisco, CA",
+    "Remote (US)"
+   ],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/8f3c27f0-50fb-47ba-a3dd-597428380843/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/8f3c27f0-50fb-47ba-a3dd-597428380843",
+   "first_published": null,
+   "last_published": "2026-09-14T03:34:59.834+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:8d516dbd-e5b7-43da-922f-1417ead4d082",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Account Executive | Inside Sales",
+   "location": "New York, NY (HQ)",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/8d516dbd-e5b7-43da-922f-1417ead4d082/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/8d516dbd-e5b7-43da-922f-1417ead4d082",
+   "first_published": null,
+   "last_published": "2026-11-06T00:21:17.869+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:a808d519-404a-4aee-9189-2b1ad62d0330",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Account Executive | SLED",
+   "location": "San Francisco, CA",
+   "secondary_locations": [
+    "Remote (US)",
+    "New York, NY (HQ)"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/a808d519-404a-4aee-9189-2b1ad62d0330/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/a808d519-404a-4aee-9189-2b1ad62d0330",
+   "first_published": null,
+   "last_published": "2026-10-13T03:26:10.759+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:ramp:707d5f91-bcf7-42b2-a0e6-8130bf13e56b",
+   "employer": "Ramp",
+   "provider": "ashby",
+   "title": "Account Executive | Strategic",
+   "location": "San Francisco, CA",
+   "secondary_locations": [],
+   "workplace": "hybrid",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://jobs.ashbyhq.com/ramp/707d5f91-bcf7-42b2-a0e6-8130bf13e56b/application",
+   "job_url": "https://jobs.ashbyhq.com/ramp/707d5f91-bcf7-42b2-a0e6-8130bf13e56b",
+   "first_published": null,
+   "last_published": "2026-08-11T17:13:52.073+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  },
+  {
+   "uid": "greenhouse:recidiviz:4719039006",
+   "employer": "Recidiviz",
+   "provider": "greenhouse",
+   "title": "State Partnerships Manager",
+   "location": "Remote, USA",
+   "secondary_locations": [
+    "Remote"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Sales",
+   "apply_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4719039006",
+   "job_url": "https://job-boards.greenhouse.io/recidiviz/jobs/4719039006",
+   "first_published": "2026-10-05T19:05:47-04:00",
+   "last_published": null,
+   "last_checked": "2026-11-18T06:23:54Z",
+   "requirements": null
+  },
+  {
+   "uid": "ashby:linear:f16dd5e9-ed10-4b8e-b5d7-1b8b5e3f002f",
+   "employer": "Linear",
+   "provider": "ashby",
+   "title": "Creative Producer",
+   "location": "North America",
+   "secondary_locations": [
+    "Europe"
+   ],
+   "workplace": "remote",
+   "regions": [
+    "Europe",
+    "US"
+   ],
+   "level": "unknown",
+   "level_reason": "level not stated",
+   "category": "Other",
+   "apply_url": "https://jobs.ashbyhq.com/linear/f16dd5e9-ed10-4b8e-b5d7-1b8b5e3f002f/application",
+   "job_url": "https://jobs.ashbyhq.com/linear/f16dd5e9-ed10-4b8e-b5d7-1b8b5e3f002f",
+   "first_published": null,
+   "last_published": "2026-10-21T23:20:54.426+00:00",
+   "last_checked": "2026-11-18T06:23:55Z",
+   "requirements": null
+  }
+ ]
+}
